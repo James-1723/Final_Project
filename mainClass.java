@@ -12,6 +12,7 @@ public class mainClass {
         int timeEnd = 0; //結束的時間
         boolean control = true; //控制迴圈
         Scanner scn = new Scanner(System.in);
+        int count = 0;
 
         schedule middle = new schedule();
         meal mealed = new meal();
@@ -22,6 +23,8 @@ public class mainClass {
         System.out.println("Hint");
 
         while (control == true) {
+            count++;
+            System.out.println("-".repeat(10) + "Edit_Time: " + count + "-".repeat(10));
             System.out.println("Please input your schedule, input 'A' for leisure, 'B' for work, 'C' for class, 'D' for eating: ");
             tem = scn.next();
 
@@ -39,7 +42,6 @@ public class mainClass {
 
                 leisure leisurein = new leisure(type, timeBegin, timeEnd, detail);
                 leisured.adder(leisurein);
-                //localSchedule.classifier(localSchedule);
             }
             else if (tem.equals("B")) {
                 type = "Work";
@@ -91,15 +93,24 @@ public class mainClass {
             }
 
             System.out.println("-".repeat(40));
-            //localSchedule.adder(localSchedule);
 
-            System.out.println("Do you want see the schedules? yes/no");
+            
+            //Keep Editing?
+            System.out.println("Do you want to keep editing? yes/no");
+            m = scn.next();
+            if (m.equals("no")) {
+                control = false;
+            }
+            
+            System.out.println("-".repeat(40));
+            
+            middle.classifier();
+            
+            //See the schedule or not
+            System.out.println("\nDo you want see the schedules? yes/no");
             String k = scn.next();
 
-            if (k.equals("yes")) {
-                
-                System.out.println(outputDecider);
-                
+            while (k.equals("yes")) {                
                 System.out.printf("What to Outout: \n");
                 outputDecider = scn.next();
                 
@@ -127,15 +138,10 @@ public class mainClass {
                     default:
                         break;
                 }
-            }
 
-            //Examination
-            System.out.println("Do you want to keep editing? yes/no");
-            m = scn.next();
-
-            //Ending Section
-            if (m.equals("no")) {
-                control = false;
+                System.out.println("\nDo you want see the schedules? yes/no");
+                k = scn.next();
+    
             }
 
             System.out.println();

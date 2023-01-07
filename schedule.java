@@ -5,6 +5,7 @@ public class schedule {
     private String type;
     private String detail;
     private ArrayList<schedule> scheduleList = new ArrayList<>();
+    private ArrayList<schedule> orderList = new ArrayList<>();
 
     public schedule () {
 
@@ -17,33 +18,62 @@ public class schedule {
         this.detail = reci_Detail;
     }
 
-    public void classifier (schedule schedules) {
-        //addInArray.scheduleAddIn(schedules);
-        scheduleList.add(schedules);
-        if (schedules.getType().equals("meal")) {
-            meal meals = new meal(this.type, this.timeBegin, this.timeEnd, this.detail);
-            meals.adder(meals);
-            //addInArray.mealAddIn(meals);
+    public void classifier () {
+        //int largestIndex = 0;
+        //int i = 1;
+        schedule orderElement;
+
+        /*for (schedule schedule : scheduleList) {
+            if (scheduleList.size() > 1) {
+                if (schedule.getTimeBegin() > scheduleList.get(i).getTimeBegin()) {
+                    orderElement = scheduleList.get(i);
+                    scheduleList.set(i, schedule);
+                    scheduleList.set(i-1, orderElement);
+                } 
+            }size = 5: 0,1,2,3
+            i++;
+        }*/
+
+        for (int k = 0; k < scheduleList.size()-1; k++) {
+            int a = scheduleList.size();
+
+            for (int n = 0; n < a-1; n++) {
+                if (scheduleList.size() > 1) {
+                    //System.out.println("n = " + n + "\nlist size = " + scheduleList.size());
+    
+                    if (scheduleList.get(n).getTimeBegin() > scheduleList.get(n+1).getTimeBegin()) {
+                        orderElement = scheduleList.get(n+1);
+                        scheduleList.set(n+1, scheduleList.get(n));
+                        scheduleList.set(n, orderElement);
+    
+                    } 
+                }
+            }
+            a--;
         }
-        else if (schedules.getType().equals("leisure")) {
-            leisure leisures = new leisure(this.type, this.timeBegin, this.timeEnd, this.detail);
-            leisures.adder(schedules);
-            //addInArray.leisureAddIn(leisures);
-        }
-        else if (schedules.getType().equals("work")) {
-            work works = new work(this.type, this.timeBegin, this.timeEnd, this.detail);
-            works.adder(works);
-            //addInArray.workAddIn(works);
-        }
-        else if (schedules.getType().equals("school")) {
-            school schools = new school(this.type, this.timeBegin, this.timeEnd, this.detail);
-            schools.adder(schools);
-            //addInArray.schoolAddIn(schools);
-        }
+
+        /*for (int n = 0; n < scheduleList.size(); n++) {
+
+            if (scheduleList.size() == 1) {
+                
+            } 
+            else if () {
+
+                for (int i = 0; i < scheduleList.size(); i++) {
+                    if (scheduleList.get(i).getTimeBegin() > scheduleList.get(i+1).getTimeBegin()) {
+                        largestIndex = i;
+                    }
+                }
+                orderList.add(scheduleList.get(largestIndex));
+                scheduleList.remove(scheduleList.get(largestIndex));
+
+            }
+        }*/
     }
 
     public void adder (schedule schedules) {
         scheduleList.add(schedules);
+        orderList = scheduleList;
     }
 
     public String getType () {
