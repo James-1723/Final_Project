@@ -7,7 +7,6 @@ public class mainClass {
         String m = ""; //用來存退出與否
         String outputDecider = ""; //Deciding what to outout
 
-
         int timeBegin = 0; //開始的時間
         int timeEnd = 0; //結束的時間
         boolean control = true; //控制迴圈
@@ -19,8 +18,6 @@ public class mainClass {
         leisure leisured = new leisure();
         work worked = new work();
         school schooled = new school();
-
-        System.out.println("Hint");
 
         while (control == true) {
             count++;
@@ -105,7 +102,7 @@ public class mainClass {
             System.out.println("-".repeat(40));
             
             middle.classifier();
-            
+
             //See the schedule or not
             System.out.println("\nDo you want see the schedules? yes/no");
             String k = scn.next();

@@ -5,7 +5,6 @@ public class schedule {
     private String type;
     private String detail;
     private ArrayList<schedule> scheduleList = new ArrayList<>();
-    private ArrayList<schedule> orderList = new ArrayList<>();
 
     public schedule () {
 
@@ -41,7 +40,6 @@ public class schedule {
 
     public void adder (schedule schedules) {
         scheduleList.add(schedules);
-        orderList = scheduleList;
     }
 
     public String getType () {
@@ -61,19 +59,13 @@ public class schedule {
     }
 
     public String getInfo () {
-        System.out.println("size = " + scheduleList.size());
-        String allSchedule = "Schedule List: ";
-        int k = 0;
+        String allSchedule = "All types schedule List: \n";
 
         for (schedule schedule : scheduleList) {
-            if (k > 0) {
-                allSchedule += ", ";
-            }
-            allSchedule += schedule.getDetail();
-            k++;
-            System.out.println(k);
+            allSchedule += " ".repeat(4) + schedule.getDetail() + "\n" + " ".repeat(8) + "Time: " + schedule.getTimeBegin() + " - " + schedule.getTimeEnd() + "\n";
         }
 
+        allSchedule += "-".repeat(40);
         return allSchedule;
     }
 

@@ -34,7 +34,7 @@ public class work extends schedule{
         this.works.add(works);
     }
 
-    public String getInfo () {
+    /*public String getInfo () {
         String allWork = "Work List: ";
         int k = 0;
         for (work work : works) {
@@ -44,6 +44,17 @@ public class work extends schedule{
             allWork += work.getDetail();
             k++;
         }
+        return allWork;
+    }*/
+
+    public String getInfo () {
+        String allWork = "Work's List: \n";
+
+        for (work work : works) {
+            allWork += " ".repeat(4) + work.getDetail() + "\n" + " ".repeat(8) + "Time: " + work.getTimeBegin() + " - " + work.getTimeEnd() + "\n";
+        }
+
+        allWork += "-".repeat(40);
         return allWork;
     }
 

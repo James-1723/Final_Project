@@ -35,15 +35,14 @@ public class leisure extends schedule{
     }
 
     public String getInfo () {
-        String allLeisure= "Leisure's List: ";
-        int k = 0;
+        String allLeisure = "Leisure's List: \n";
+
         for (leisure leisure : leisures) {
-            if (k > 0) {
-                allLeisure += ", ";
-            }
-            allLeisure += leisure.getDetail();
-            k++;
+            allLeisure += " ".repeat(4) + leisure.getDetail() + "\n" + " ".repeat(8) + "Time: " + leisure.getTimeBegin() + " - " + leisure.getTimeEnd() + "\n";
         }
+
+        allLeisure += "-".repeat(40);
         return allLeisure;
     }
+
 }

@@ -34,18 +34,15 @@ public class meal extends schedule{
     public void adder (meal meals) {
         this.meals.add(meals);
     }
-
+    
     public String getInfo () {
-        String allMeal= "Meal's List: ";
-        int k = 0;
+        String allMeal = "Meal's List: \n";
+
         for (meal meal : meals) {
-            if (k>0) {
-                allMeal += ", ";
-            }
-            allMeal += meal.getDetail();
-            k++;
+            allMeal += " ".repeat(4) + meal.getDetail() + "\n" + " ".repeat(8) + "Time: " + meal.getTimeBegin() + " - " + meal.getTimeEnd() + "\n";
         }
+
+        allMeal += "-".repeat(40);
         return allMeal;
     }
-    
 }

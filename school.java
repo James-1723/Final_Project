@@ -35,18 +35,14 @@ public class school extends schedule{
     }
 
     public String getInfo () {
-        String allSchool = "School List: ";
-        int k = 0;
+        String allschool = "School's List: \n";
 
         for (school school : schools) {
-            if (k > 0) {
-                allSchool += ", ";
-            }
-
-            allSchool += school.getDetail();
-            k++;
+            allschool += " ".repeat(4) + school.getDetail() + "\n" + " ".repeat(8) + "Time: " + school.getTimeBegin() + " - " + school.getTimeEnd() + "\n";
         }
-        return allSchool;
+
+        allschool += "-".repeat(40);
+        return allschool;
     }
 
 }
