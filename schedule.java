@@ -19,21 +19,7 @@ public class schedule {
     }
 
     public void classifier () {
-        //int largestIndex = 0;
-        //int i = 1;
         schedule orderElement;
-
-        /*for (schedule schedule : scheduleList) {
-            if (scheduleList.size() > 1) {
-                if (schedule.getTimeBegin() > scheduleList.get(i).getTimeBegin()) {
-                    orderElement = scheduleList.get(i);
-                    scheduleList.set(i, schedule);
-                    scheduleList.set(i-1, orderElement);
-                } 
-            }size = 5: 0,1,2,3
-            i++;
-        }*/
-
         for (int k = 0; k < scheduleList.size()-1; k++) {
             int a = scheduleList.size();
 
@@ -51,24 +37,6 @@ public class schedule {
             }
             a--;
         }
-
-        /*for (int n = 0; n < scheduleList.size(); n++) {
-
-            if (scheduleList.size() == 1) {
-                
-            } 
-            else if () {
-
-                for (int i = 0; i < scheduleList.size(); i++) {
-                    if (scheduleList.get(i).getTimeBegin() > scheduleList.get(i+1).getTimeBegin()) {
-                        largestIndex = i;
-                    }
-                }
-                orderList.add(scheduleList.get(largestIndex));
-                scheduleList.remove(scheduleList.get(largestIndex));
-
-            }
-        }*/
     }
 
     public void adder (schedule schedules) {
