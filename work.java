@@ -34,19 +34,6 @@ public class work extends schedule{
         this.works.add(works);
     }
 
-    /*public String getInfo () {
-        String allWork = "Work List: ";
-        int k = 0;
-        for (work work : works) {
-            if (k > 0) {
-                allWork += ", ";;
-            }
-            allWork += work.getDetail();
-            k++;
-        }
-        return allWork;
-    }*/
-
     public String getInfo () {
         String allWork = "Work's List: \n";
 

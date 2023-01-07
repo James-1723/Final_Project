@@ -23,9 +23,7 @@ public class schedule {
             int a = scheduleList.size();
 
             for (int n = 0; n < a-1; n++) {
-                if (scheduleList.size() > 1) {
-                    //System.out.println("n = " + n + "\nlist size = " + scheduleList.size());
-    
+                if (scheduleList.size() > 1) {    
                     if (scheduleList.get(n).getTimeBegin() > scheduleList.get(n+1).getTimeBegin()) {
                         orderElement = scheduleList.get(n+1);
                         scheduleList.set(n+1, scheduleList.get(n));

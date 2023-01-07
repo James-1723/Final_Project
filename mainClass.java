@@ -144,8 +144,6 @@ public class mainClass {
             System.out.println();
 
         }
-        
-
         scn.close();
     }
 }
