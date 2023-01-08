@@ -6,8 +6,8 @@ public class leisure extends schedule{
 
     }
 
-    public leisure (String type, int timeBegin, int timeEnd, String detail) {
-        super(timeBegin, timeEnd, type, detail);
+    public leisure (Double date, String type, int timeBegin, int timeEnd, String detail) {
+        super(date, timeBegin, timeEnd, type, detail);
     }
 
     public void classifier () {

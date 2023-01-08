@@ -26,8 +26,8 @@ public class work extends schedule{
         }
     }
 
-    public work (String type, int timeBegin, int timeEnd, String detail) {
-        super(timeBegin, timeEnd, type, detail);
+    public work (Double date, String type, int timeBegin, int timeEnd, String detail) {
+        super(date, timeBegin, timeEnd, type, detail);
     }
 
     public void adder (work works) {

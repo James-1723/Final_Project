@@ -6,8 +6,8 @@ public class meal extends schedule{
 
     }
 
-    public meal (String type, int timeBegin, int timeEnd, String detail) {
-        super(timeBegin, timeEnd, type, detail);
+    public meal (Double date, String type, int timeBegin, int timeEnd, String detail) {
+        super(date, timeBegin, timeEnd, type, detail);
         this.meals = new ArrayList<>();
     }
 

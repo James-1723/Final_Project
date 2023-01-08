@@ -9,6 +9,7 @@ public class mainClass {
 
         int timeBegin = 0; //開始的時間
         int timeEnd = 0; //結束的時間
+        double date = 0;
         boolean control = true; //控制迴圈
         Scanner scn = new Scanner(System.in);
         int count = 0;
@@ -27,64 +28,72 @@ public class mainClass {
 
             if (tem.equals("A")) {
                 type = "Leisure";
+                System.out.println("What are you planning to do at this time?");
+                detail = scn.next(); //細節
+                System.out.println("Please input month & date (ex: 1.02 or 12.01): ");
+                date = scn.nextDouble(); //日期
                 System.out.println("Please input the begin time (2400): ");
                 timeBegin = scn.nextInt(); //時間
                 System.out.println("Please input the end time (2400): ");
                 timeEnd = scn.nextInt();
-                System.out.println("What are you planning to do at this time?");
-                detail = scn.next(); //細節
 
-                schedule localSchedule = new schedule(timeBegin, timeEnd, type, detail);
+                schedule localSchedule = new schedule(date, timeBegin, timeEnd, type, detail);
                 middle.adder(localSchedule);
 
-                leisure leisurein = new leisure(type, timeBegin, timeEnd, detail);
+                leisure leisurein = new leisure(date, type, timeBegin, timeEnd, detail);
                 leisured.adder(leisurein);
             }
             else if (tem.equals("B")) {
                 type = "Work";
+                System.out.println("What are you planning to do at this time?");
+                detail = scn.next(); //細節
+                System.out.println("Please input month & date (ex: 1.02 or 12.01): ");
+                date = scn.nextDouble(); //日期
                 System.out.println("Please input the begin time (2400): ");
                 timeBegin = scn.nextInt(); //時間
                 System.out.println("Please input the end time (2400): ");
                 timeEnd = scn.nextInt();
-                System.out.println("What are you planning to do at this time?");
-                detail = scn.next(); //細節
 
-                schedule localSchedule = new schedule(timeBegin, timeEnd, type, detail);
+                schedule localSchedule = new schedule(date, timeBegin, timeEnd, type, detail);
                 middle.adder(localSchedule);
 
-                work workin = new work(type, timeBegin, timeEnd, detail);
+                work workin = new work(date, type, timeBegin, timeEnd, detail);
                 worked.adder(workin);
                 
             }
             else if (tem.equals("C")) {
                 type = "School";
+                System.out.println("What are you planning to do at this time?");
+                detail = scn.next(); //細節
+                System.out.println("Please input month & date (ex: 1.02 or 12.01): ");
+                date = scn.nextDouble(); //日期
                 System.out.println("Please input the begin time (2400): ");
                 timeBegin = scn.nextInt(); //時間
                 System.out.println("Please input the end time (2400): ");
                 timeEnd = scn.nextInt();
-                System.out.println("What are you planning to do at this time?");
-                detail = scn.next(); //細節
 
-                schedule localSchedule = new schedule(timeBegin, timeEnd, type, detail);
+                schedule localSchedule = new schedule(date, timeBegin, timeEnd, type, detail);
                 middle.adder(localSchedule);
 
-                school schoolin = new school(type, timeBegin, timeEnd, detail);
+                school schoolin = new school(date, type, timeBegin, timeEnd, detail);
                 schooled.adder(schoolin);
 
             }
             else if (tem.equals("D")) {
                 type = "Eating";
+                System.out.println("What are you planning to do at this time?");
+                detail = scn.next(); //細節
+                System.out.println("Please input month & date (ex: 1.02 or 12.01): ");
+                date = scn.nextDouble(); //日期
                 System.out.println("Please input the begin time (2400): ");
                 timeBegin = scn.nextInt(); //時間
                 System.out.println("Please input the end time (2400): ");
                 timeEnd = scn.nextInt();
-                System.out.println("What are you planning to do at this time?");
-                detail = scn.next(); //細節
 
-                schedule localSchedule = new schedule(timeBegin, timeEnd, type, detail);
+                schedule localSchedule = new schedule(date, timeBegin, timeEnd, type, detail);
                 middle.adder(localSchedule);
 
-                meal mealin = new meal(type, timeBegin, timeEnd, detail);
+                meal mealin = new meal(date, type, timeBegin, timeEnd, detail);
                 mealed.adder(mealin);
                 
             }
