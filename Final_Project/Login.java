@@ -7,11 +7,10 @@ import java.awt.*;
 
 public class Login extends JFrame{
 	
-	
+	private MainPage main;
 	private JTextField account, password;
 	private JButton enroll, login;
 	
-
 	public Login(){
 		User user = new User();
 		account = new JTextField(10);
@@ -45,14 +44,13 @@ public class Login extends JFrame{
 				try {
 					user.checkAccountExist(ac);
 					user.checkPassword(ac, pw);
-					
-					
+					main = new MainPage();
+					main.setDefaultCloseOperation(EXIT_ON_CLOSE);
+					main.setVisible(true);
+					main.setSize(600,500);
 				}catch(AccountError|PasswordError e1) {
-		            
 					JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				}
-				
-		
 			}
 		});
 	}
