@@ -1,6 +1,12 @@
 import java.awt.*;
 import java.sql.*;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+
+import com.mysql.cj.jdbc.result.ResultSetMetaData;
+
 import java.util.ArrayList;
 import java.awt.event.*;
 
@@ -9,20 +15,19 @@ public class JoinPage extends JFrame{
 	private JButton submit;
 	private Connection conn;
 	private JCheckBox[] checkBoxes;
-	private JTextArea groupArea;
 	private JScrollPane scrollPane; 
 	private ArrayList<Integer> checkList, selectedCourseNum;
 	private ResultSet result;
+	private JTable joinTable;
 	
 	public JoinPage(ArrayList checkList,Connection conn)throws SQLException{
 		this.conn = conn;
 		this.checkList = checkList;
 		this.setTitle("JoinPage");
-		this.setSize(100,300);
 		selectedCourseNum = new ArrayList<Integer>();
-		createPage(conn);
 		createButton();
 		createLayout();
+		showTable();
 		
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -34,8 +39,8 @@ public class JoinPage extends JFrame{
 							if(e.getStateChange()==ItemEvent.SELECTED) {
 								try {
 									if(result.absolute(index+1)) {
-										int slctdGrpNum = result.getInt("leader_ID");
-										selectedCourseNum.add(slctdGrpNum);
+										int slctdGrpNum = result.getInt("ID");
+										selectedCourseNum.add(slctdGrpNum);//存放組長學號
 										//寄送信
 										//回到Main page
 									}
@@ -50,52 +55,77 @@ public class JoinPage extends JFrame{
 		});
 		
 	}
-	public void createPage(Connection conn) throws SQLException{
-		groupArea = new JTextArea();
-		checkList = new ArrayList<Integer>();
-		for(int i=0; i<checkList.size(); i++) {
-			groupArea.append("group_number\t group_leader\t leader_ID\t current_number\t recruit_number\t say_something\t select\n");
-			String query = "SELECT * FROM ?";
-			PreparedStatement stat = conn.prepareStatement(query);
-			stat.setLong(1,(checkList.get(i)));			
-			try {
-				Statement stmt = conn.createStatement();
-		        Boolean success = stmt.execute(query);
-				if(success) {
-					result = stmt.getResultSet();
-		            StringBuilder sb = new StringBuilder();		
-		            checkBoxes = new JCheckBox[result.getRow()];
-		            int j=0;
-		            while(result.next()) {
-		                sb.append(result.getString("group_number")).append("\t")
-		                  .append(result.getString("group_leader")).append("\t")
-		                  .append(result.getString("leader_ID")).append("\t")
-		                  .append(result.getString("current_number")).append("\t")
-		                  .append(result.getString("recruit_number")).append("\t")
-		                  .append(result.getString("say_something")).append("\t")
-		                  .append(checkBoxes[j]);
-		                j++;
-		            }
-		            groupArea.append(sb.toString());
-		            groupArea.append("\n\n");
-				}
-			}catch(SQLException e) {
-				e.printStackTrace();		
-			}
-		}
-	}
-	
-	
 	public void createButton() {
 		submit = new JButton("submit");
 	}
 	public void createLayout() {
 		
-		scrollPane = new JScrollPane(groupArea);
-		
-		JPanel panel = new JPanel();
-		panel.add(scrollPane);
-		panel.add(submit);
-		add(panel,BorderLayout.CENTER);
+		joinTable = new JTable();
+	    scrollPane = new JScrollPane(joinTable);
+	    scrollPane.setPreferredSize(new Dimension(500, 200));
+	    getContentPane().add(scrollPane, BorderLayout.CENTER);
+	    
+	    JPanel downPanel = new JPanel();
+	    downPanel.add(submit);
+	    getContentPane().add(downPanel, BorderLayout.SOUTH);
+	}
+	public void showTable() {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","n2431836");
+			String query = "SELECT * FROM `join_table` ";
+			PreparedStatement stat = conn.prepareStatement(query);
+	        ResultSet rs = stat.executeQuery();
+	        System.out.print("kok");
+            DefaultTableModel model = new DefaultTableModel() {
+            	
+                //指定每一欄的類型
+                public Class<?> getColumnClass(int columnIndex) {
+                    if (columnIndex == 0) {
+                        return Boolean.class; // 第一欄設為布林類型
+                    } else {
+                        return super.getColumnClass(columnIndex);
+                    }
+                }
+
+                //指定哪些欄位是可以編輯的
+                public boolean isCellEditable(int row, int column) {
+                    return column == 0; // 只有第一欄是可編輯的
+                }
+            };
+
+            model.addColumn("Select"); // 新增布林欄位
+
+            ResultSetMetaData rsmd = (ResultSetMetaData)rs.getMetaData();
+            int cols = rsmd.getColumnCount();
+
+            // 加入欄位名稱
+            for (int i = 1; i <= cols; i++) {
+                model.addColumn(rsmd.getColumnName(i));
+            }
+
+            // 加入資料 要先創建每一行
+            while (rs.next()) {
+                Object[] rows = new Object[cols + 1]; // 創建原database資料的欄位數加一
+                rows[0] = false; // 預設未選中
+                for (int i = 1; i <= cols; i++) {
+                    rows[i] = rs.getObject(i);//將每一行添加到row
+                }
+                model.addRow(rows);
+            }
+
+            joinTable.setModel(model);
+            
+         // 在每一行前面加 JCheckBox
+            TableColumnModel columnModel = joinTable.getColumnModel();//取得負責管理表格的欄位設置
+            TableColumn checkBoxColumn = columnModel.getColumn(0);//取得欄位0 就是整欄的checkBox
+            checkBoxColumn.setCellEditor(new DefaultCellEditor(new JCheckBox()));//設置欄位編輯器是預設的，並初始化
+            checkBoxColumn.setCellRenderer(joinTable.getDefaultRenderer(Boolean.class));
+
+            stat.close();
+            conn.close();
+        } catch (ClassNotFoundException | SQLException e1) {
+			e1.printStackTrace();
+		}
 	}
 }
