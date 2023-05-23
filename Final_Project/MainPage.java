@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-//test
 
 import java.awt.event.*;
 import java.awt.event.FocusListener;
@@ -17,13 +16,13 @@ import com.mysql.cj.jdbc.result.ResultSetMetaData;
 
 import java.sql.*;
 import java.util.ArrayList;
-//資料叫courses
+//資料庫叫courses
 public class MainPage extends JFrame{
 	private JLabel searchLabel;
 	private JTextField searchField;
 	private JScrollPane scrollPane;
 	private Connection conn;
-	private JButton join, recruit, myStatus, searchButton;
+	private JButton join, recruit, myStatus, searchButton,showAll;
 	private ArrayList<Integer> selectedIDs;
 	private JTable table_1;
 	
@@ -32,6 +31,7 @@ public class MainPage extends JFrame{
 		createButton();
 		createTextField();
 		createPanel();
+		setTitle("Main Page");
 		showAll();//先秀出全部的課程
 		
 		//如果使用者有想特別找的再打search
@@ -43,15 +43,16 @@ public class MainPage extends JFrame{
 					Class.forName("com.mysql.cj.jdbc.Driver");
 					conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","n2431836");
 					String query = "SELECT * FROM `courses` WHERE name LIKE ? OR id LIKE ? OR teacher LIKE ?";
-					PreparedStatement stat = conn.prepareStatement(query);
-					stat.setString(1, "%" + search + "%");
-			        stat.setString(2, "%" + search + "%");
+					PreparedStatement stat = conn.prepareStatement(query);//互動性資料 index從1開始
+					stat.setString(1, "%" + search + "%");//有出現search就會抓回來
+			        stat.setString(2, "%" + search + "%");//_r% _是single character
 			        stat.setString(3, "%" + search + "%");
-			        ResultSet rs = stat.executeQuery();
+			        ResultSet rs = stat.executeQuery(); //execute()回傳boolean, executeUpdate()回傳int 影響資料數
+			    
 
                     DefaultTableModel model = new DefaultTableModel() {
                     	
-                        @Override//指定每一欄的類型
+                       //指定每一欄的類型
                         public Class<?> getColumnClass(int columnIndex) {
                             if (columnIndex == 0) {
                                 return Boolean.class; // 第一欄設為布林類型
@@ -60,7 +61,7 @@ public class MainPage extends JFrame{
                             }
                         }
 
-                        @Override//指定哪些欄位是可以編輯的
+                        //指定哪些欄位是可以編輯的
                         public boolean isCellEditable(int row, int column) {
                             return column == 0; // 只有第一欄是可編輯的
                         }
@@ -120,7 +121,7 @@ public class MainPage extends JFrame{
 						JoinPage join = new JoinPage(selectedIDs,conn);
 						join.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 						join.setVisible(true);
-						join.setSize(600,500);
+						join.setSize(900,500);
 					}catch(SQLException e1) {
 						e1.printStackTrace();
 					}
@@ -159,6 +160,11 @@ public class MainPage extends JFrame{
 				my_status.setSize(600,500);
 			}
 		});
+		showAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showAll();
+			}
+		});
 
 	}
 	public void createLabel() {
@@ -169,12 +175,12 @@ public class MainPage extends JFrame{
 		join = new JButton("Join");
 		recruit = new JButton("Recruit");
 		myStatus = new JButton("my status");
+		showAll = new JButton("show all");
 	}
 	public void createTextField() {
 
-		searchField = new JTextField(30);
+		searchField = new JTextField(25);
 		searchField.setText("Search by course's name, ID, or teacher."); // 設定提示文字
-		searchField.setForeground(Color.GRAY); // 設定文字顏色為灰色
 //		
 //		searchField.addFocusListener(new FocusListener() {
 //		    
@@ -204,7 +210,7 @@ public class MainPage extends JFrame{
 
             DefaultTableModel model = new DefaultTableModel() {
             	
-                @Override//指定每一欄的類型
+                //指定每一欄的類型
                 public Class<?> getColumnClass(int columnIndex) {
                     if (columnIndex == 0) {
                         return Boolean.class; // 第一欄設為布林類型
@@ -213,7 +219,7 @@ public class MainPage extends JFrame{
                     }
                 }
 
-                @Override//指定哪些欄位是可以編輯的
+                //指定哪些欄位是可以編輯的
                 public boolean isCellEditable(int row, int column) {
                     return column == 0; // 只有第一欄是可編輯的
                 }
@@ -260,6 +266,7 @@ public class MainPage extends JFrame{
 		upPanel.add(searchLabel);
 		upPanel.add(searchField);
 		upPanel.add(searchButton);
+		upPanel.add(showAll);
 		getContentPane().add(upPanel,BorderLayout.NORTH);
 		
 		table_1 = new JTable();
