@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.sql.*;
 
 public class User {
 	private ArrayList<String> accounts;
@@ -7,6 +8,13 @@ public class User {
 	public User() {
 		accounts = new ArrayList<String>();
 		passwords = new ArrayList<String>();
+
+		//*Setting Data Base */
+		String server = "jdbc:mysql://140.119.19.73:3315/";
+		String database = "111306017"; // change to your own database
+		String url = server + database + "?useSSL=false";
+		String username = "111306017"; // change to your own user name
+		String password = "9ftmc"; // change to your own password
 	}
 
 	public void add(String account, String pw) throws AccountError {

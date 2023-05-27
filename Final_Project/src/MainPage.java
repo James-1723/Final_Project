@@ -11,8 +11,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
-
-import com.mysql.cj.jdbc.result.ResultSetMetaData;
+import java.sql.*;
+//似乎只要import上面這個就好
+//import com.mysql.cj.jdbc.result.ResultSetMetaData;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -4,8 +4,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import java.sql.*;
 
-import com.mysql.cj.jdbc.result.ResultSetMetaData;
+//import com.mysql.cj.jdbc.result.ResultSetMetaData;
 
 import java.util.ArrayList;
 import java.awt.event.*;
