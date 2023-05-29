@@ -110,7 +110,7 @@ public class RecruitPage extends JFrame {
 				toSay = textField_6.getText();
 
 				//連接的資料庫&資料庫名稱?
-				try(Connection conn = DriverManager.getConnection(, )){
+				try(Connection conn = DriverManager.getConnection()){
 					String query = "INSERT INTO databaseName (groupName, groupLeader, department, studentID, currentMember, recruitNumber, toSay) VALUES (?, ?, ?, ?, ?, ?, ?)";
 					PreparedStatement stmt = conn.prepareStatement(query);
 
