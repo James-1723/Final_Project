@@ -1,10 +1,4 @@
 import javax.swing.*;
-
-import org.w3c.dom.Text;
-
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.LayoutManager;
 import java.sql.*;
 
 public class My_status extends JFrame{
@@ -12,12 +6,16 @@ public class My_status extends JFrame{
 	boolean sucess;
 	private JTable join;
 	private JTable recruit;
+	private JScrollPane scrollPane1;
+	private JScrollPane scrollPane2;
 	ResultSet result;
+	JPanel panel = new JPanel();
 	public My_status(){
-		createLayout();
+		createTable();
+		createPanel();
 		setTitle("My Status");
 	}
-	public void createLayout() {
+	public void createTable() {
 		try{
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","n2431836");
 			Statement stat = conn.createStatement();
@@ -29,20 +27,12 @@ public class My_status extends JFrame{
 			result = stat.getResultSet();
 			// 定義表格的數據
 			Object[][] data = {
-				{"", "", ""},
-				{"", "", ""},
-				{"", "", ""}
+				{"", "", "", ""},
+				{"", "", "", ""},
+				{"", "", "", ""}
 			};
 			// 創建一個新的JTable實例
 			join = new JTable(data, columnNames);
-			// 為了能夠滾動查看所有數據，我們將表格放入一個JScrollPane。
-	
-			// 創建一個新的JFrame實例並將表格添加到該框架
-			
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.add(scrollPane);
-			frame.pack();
-			frame.setVisible(true);
 			}
 
 			// 定義表格的標題
@@ -50,28 +40,27 @@ public class My_status extends JFrame{
 			query = "";
 			sucess = stat.execute(query);
 			if(sucess){
-				ResultSet result = stat.getResultSet();
+				result = stat.getResultSet();
 				// 定義表格的數據
 				Object[][] data2 = {
 					{"", "", ""},
 					{"", "", ""},
 					{"", "", ""}
 				};
-			
+				recruit = new JTable(data2, columnNames2);
 			}
-			recruit = new JTable(data2, columnNames2);
+			
 			// 為了能夠滾動查看所有數據，我們將表格放入一個JScrollPane。
-			JScrollPane scrollPane1 = new JScrollPane(join);
-			JScrollPane scrollPane2 = new JScrollPane(recruit);
-			JFrame frame = new JFrame();
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.add(scrollPane);
-			frame.pack();
-			frame.setVisible(true);
+			scrollPane1 = new JScrollPane(join);
+			scrollPane2 = new JScrollPane(recruit);
 			result.close();			
 	} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
 	
+	}
+	public void createPanel(){
+		panel.add(scrollPane1, scrollPane2);
+		panel.setVisible(true);
 	}
 }
