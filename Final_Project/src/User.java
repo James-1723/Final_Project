@@ -7,7 +7,6 @@ public class User {
 	private String studentName;
 
 	//*Setting Data Base */
-
 	public String server = "jdbc:mysql://140.119.19.73:3315/";
 	public String database = "111306017"; // change to your own database
 	public String url = server + database + "?useSSL=false";
@@ -29,7 +28,7 @@ public class User {
 		passwords.add(pw);
 		
 		//*Try whether system connect to DB or not */
-		try (Connection conn = DriverManager.getConnection(url, username, password)){
+		try (Connection conn = DriverManager.getConnection(url, username, password)) {
 
 			Statement stat = conn.createStatement();
 			String query;

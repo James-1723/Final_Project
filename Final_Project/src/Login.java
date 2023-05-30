@@ -19,7 +19,7 @@ public class Login extends JFrame{
 		login = new JButton("login");
 
 		//*下面這行只是方便我改其他地方臨時加的 */
-		String studentName = "test2";
+		String studentName = "me";
 		//*這邊幫我加一下學生姓名的UI */
 
 		//*在幫我額外加一個學生的系別UI */
