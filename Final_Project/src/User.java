@@ -4,24 +4,55 @@ import java.sql.*;
 public class User {
 	private ArrayList<String> accounts;
 	private ArrayList<String> passwords;
+	private String studentName;
+
+	//*Setting Data Base */
+
+	public String server = "jdbc:mysql://140.119.19.73:3315/";
+	public String database = "111306017"; // change to your own database
+	public String url = server + database + "?useSSL=false";
+	public String username = "111306017"; // change to your own user name
+	public String password = "9ftmc"; // change to your own password　　
 
 	public User() {
+
 		accounts = new ArrayList<String>();
 		passwords = new ArrayList<String>();
-
-		//*Setting Data Base */
-		String server = "jdbc:mysql://140.119.19.73:3315/";
-		String database = "111306017"; // change to your own database
-		String url = server + database + "?useSSL=false";
-		String username = "111306017"; // change to your own user name
-		String password = "9ftmc"; // change to your own password
+	
 	}
 
-	public void add(String account, String pw) throws AccountError {
+	public void add(String studentName, int department, String account, String pw) throws AccountError {
+
+		//*Throw exception if password format is wrong */
 		if (account.length() == 0)throw new AccountError("AccountError:Account can't be empty");
-		
 		accounts.add(account);
 		passwords.add(pw);
+		
+		//*Try whether system connect to DB or not */
+		try (Connection conn = DriverManager.getConnection(url, username, password)){
+
+			Statement stat = conn.createStatement();
+			String query;
+			boolean success;
+			int intAccount = Integer.parseInt(account);
+
+			query = "SELECT * FROM `Student_Info`";
+			success = stat.execute(query);
+
+			String gmail = account + "@gmail.com";
+
+			if (success) {
+                
+				query = "INSERT INTO `Student_Info` (Name, ID, Department, Gmail) VALUES" + String.format("('%s', %d, %d, '%s')", studentName, intAccount, department, gmail);
+            	success = stat.execute(query);
+
+			}
+
+		} catch (Exception e) {
+		
+			e.printStackTrace();
+
+		}
 	}
 
 	public void checkAccountExist(String account) throws AccountError {
