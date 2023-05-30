@@ -26,7 +26,8 @@ public class MainPage extends JFrame{
 	private JButton join, recruit, myStatus, searchButton,showAll;
 	private ArrayList<Integer> selectedIDs;
 	private JTable table_1;
-	
+	private User user = new User();
+
 	public MainPage() {
 		createLabel();
 		createButton();
@@ -41,9 +42,18 @@ public class MainPage extends JFrame{
 				String search = searchField.getText();
 				
 				try {
-					Class.forName("com.mysql.cj.jdbc.Driver");
-					conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","n2431836");
-					String query = "SELECT * FROM `courses` WHERE name LIKE ? OR id LIKE ? OR teacher LIKE ?";
+					//Class.forName("com.mysql.cj.jdbc.Driver");
+					try (Connection conn = DriverManager.getConnection(user.url, user.username, user.password)) {
+
+						String query = "SELECT * FROM `Department_Info`";
+
+					} catch (Exception se) {
+		
+						se.printStackTrace();
+			
+					}
+					//conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","n2431836");
+					//String query = "SELECT * FROM `courses` WHERE name LIKE ? OR id LIKE ? OR teacher LIKE ?";
 					PreparedStatement stat = conn.prepareStatement(query);//互動性資料 index從1開始
 					stat.setString(1, "%" + search + "%");//有出現search就會抓回來
 			        stat.setString(2, "%" + search + "%");//_r% _是single character
@@ -202,10 +212,10 @@ public class MainPage extends JFrame{
 //		});
 	}
 	public void showAll() {
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","n2431836");
-			String query = "SELECT * FROM `courses` ";
+		try (Connection conn = DriverManager.getConnection(user.url, user.username, user.password)){
+			//Class.forName("com.mysql.cj.jdbc.Driver");
+			//conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","n2431836");
+			String query = "SELECT * FROM `Department_Info`";
 			PreparedStatement stat = conn.prepareStatement(query);
 	        ResultSet rs = stat.executeQuery();
 
