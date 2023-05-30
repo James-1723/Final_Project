@@ -42,7 +42,7 @@ public class User {
 
 			if (success) {
                 
-				query = "INSERT INTO `Student_Info` (Name, ID, Department, Gmail) VALUES" + String.format("('%s', %d, %d, '%s')", studentName, intAccount, department, gmail);
+				query = "INSERT INTO `Student_Info` (Name, ID, Department, Gmail) VALUES" + String.format("('%s', %d, %s, '%s')", studentName, intAccount, department, gmail);
             	success = stat.execute(query);
 
 			}

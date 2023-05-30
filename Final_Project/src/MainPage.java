@@ -57,9 +57,9 @@ public class MainPage extends JFrame{
 					PreparedStatement stat = conn.prepareStatement(query);//互動性資料 index從1開始
 					stat.setString(1, "%" + search + "%");//有出現search就會抓回來
 			        stat.setString(2, "%" + search + "%");//_r% _是single character
-			        stat.setString(3, "%" + search + "%");
+			        stat.setString(3, "%" + search + "%");*/
 			        ResultSet rs = stat.executeQuery(); //execute()回傳boolean, executeUpdate()回傳int 影響資料數
-			    
+					
 
                     DefaultTableModel model = new DefaultTableModel() {
                     	
@@ -215,7 +215,7 @@ public class MainPage extends JFrame{
 		try (Connection conn = DriverManager.getConnection(user.url, user.username, user.password)){
 			//Class.forName("com.mysql.cj.jdbc.Driver");
 			//conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","n2431836");
-			String query = "SELECT * FROM `Department_Info`";
+			String query = "SELECT * FROM `Department_Info` ";
 			PreparedStatement stat = conn.prepareStatement(query);
 	        ResultSet rs = stat.executeQuery();
 
