@@ -5,29 +5,37 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
 
+//111306017
+//9ftmc
 public class Login extends JFrame {
 
 	private MainPage main;
-	private JTextField account, password, department;
+	private JTextField account, password, studentName;
 	private JButton enroll, login;
+	private JComboBox<String> jComboBox;
+	public String server = "jdbc:mysql://140.119.19.73:3315/";
+	public String database = "111306017"; // change to your own database
+	public String url = server + database + "?useSSL=false";
+	public String username = "111306017"; // change to your own user name
+	public String DBpassword = "9ftmc"; // change to your own password
 
 	public Login() {
 		User user = new User();
 		account = new JTextField(10);
 		password = new JTextField(10);
-		department = new JTextField(10);
+		studentName = new JTextField(10);
 		enroll = new JButton("enroll");
 		login = new JButton("login");
 
 		// *下面這行只是方便我改其他地方臨時加的 */
-		String studentName = "Aloha";
+		// String studentName = "Aloha";
 		// *這邊幫我加一下學生姓名的UI */
 
 		// *在幫我額外加一個學生的系別UI */
-		int department = 200;
+		//int department = 200;
 
 		createLayout();
-		setSize(600, 300);
+		setSize(600, 400);
 		setTitle("Login");
 
 		enroll.addActionListener(new ActionListener() {
@@ -35,11 +43,11 @@ public class Login extends JFrame {
 
 				String ac = account.getText();
 				String pw = password.getText();
-				// *studentName = JtextField.getText() */
-				// *department = JtextField.getText() */
+				String stuName = studentName.getText();
+				String dep = (String) jComboBox.getSelectedItem();
 				try {
 
-					user.add(studentName, department, ac, pw);
+					user.add(stuName, dep, ac, pw);
 
 				} catch (AccountError e1) {
 
@@ -70,6 +78,12 @@ public class Login extends JFrame {
 
 	public void createLayout() {
 
+		String[] optionsToChoose = { "中文系", "歷史系", "哲學系", "教育系", "政治系", "社會系", "財政系", "公行系", "地政系", "經濟系", "民族系", "外交系",
+				"國貿系", "金融系", "會計系",
+				"統計系", "企管系", "資管系", "財管系", "風管系", "新聞系", "廣告系", "廣電系", "傳播學程", "英文系" };
+		jComboBox = new JComboBox<>(optionsToChoose);
+		jComboBox.setBounds(80, 50, 140, 20);
+
 		JPanel upanel = new JPanel();
 		upanel.add(new JLabel("Account"));
 		upanel.add(account);
@@ -83,8 +97,13 @@ public class Login extends JFrame {
 
 		JPanel dePanel = new JPanel();
 		dePanel.add(new JLabel("Department"));
-		dePanel.add(department);
+		dePanel.add(jComboBox);
 		dePanel.setPreferredSize(new Dimension(500, 40));
+
+		JPanel stPanel = new JPanel();
+		stPanel.add(new JLabel("StudentName"));
+		stPanel.add(studentName);
+		stPanel.setPreferredSize(new Dimension(500, 40));
 
 		JPanel bpanel = new JPanel();
 		bpanel.add(enroll);
@@ -95,6 +114,7 @@ public class Login extends JFrame {
 		allPanel.add(upanel);
 		allPanel.add(ppanel);
 		allPanel.add(dePanel);
+		allPanel.add(stPanel);
 		allPanel.add(bpanel);
 
 		setLayout(new BorderLayout(20, 40));

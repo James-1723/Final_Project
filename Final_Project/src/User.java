@@ -20,7 +20,7 @@ public class User {
 	
 	}
 
-	public void add(String studentName, int department, String account, String pw) throws AccountError {
+	public void add(String studentName, String department, String account, String pw) throws AccountError {
 
 		//*Throw exception if password format is wrong */
 		if (account.length() == 0)throw new AccountError("AccountError:Account can't be empty");
