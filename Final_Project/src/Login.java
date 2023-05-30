@@ -8,13 +8,14 @@ import java.sql.*;
 public class Login extends JFrame {
 
 	private MainPage main;
-	private JTextField account, password;
+	private JTextField account, password, department;
 	private JButton enroll, login;
 
 	public Login() {
 		User user = new User();
 		account = new JTextField(10);
 		password = new JTextField(10);
+		department = new JTextField(10);
 		enroll = new JButton("enroll");
 		login = new JButton("login");
 
@@ -80,6 +81,11 @@ public class Login extends JFrame {
 		ppanel.add(password);
 		ppanel.setPreferredSize(new Dimension(500, 40));
 
+		JPanel dePanel = new JPanel();
+		dePanel.add(new JLabel("Department"));
+		dePanel.add(department);
+		dePanel.setPreferredSize(new Dimension(500, 40));
+
 		JPanel bpanel = new JPanel();
 		bpanel.add(enroll);
 		bpanel.add(login);
@@ -88,6 +94,7 @@ public class Login extends JFrame {
 		JPanel allPanel = new JPanel();
 		allPanel.add(upanel);
 		allPanel.add(ppanel);
+		allPanel.add(dePanel);
 		allPanel.add(bpanel);
 
 		setLayout(new BorderLayout(20, 40));
