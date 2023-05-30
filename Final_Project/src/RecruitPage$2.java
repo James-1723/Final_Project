@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;;
 
-public class RecruitPage extends JFrame {
+public class RecruitPage$2 extends JFrame {
 	private ArrayList<String>selectedIDs, info;
 	private Connection conn;
 	private JTextField textField,textField_1,textField_2,textField_3,textField_4,textField_5,textField_6;
@@ -15,8 +15,9 @@ public class RecruitPage extends JFrame {
 	private JButton postB;
 	private JTable table;
 	private Date publishTime;
+	User user = new User();
 
-	public RecruitPage(ArrayList selectedIDs, Connection conn) {
+	public RecruitPage$2(ArrayList selectedIDs, Connection conn) {
         this.selectedIDs = selectedIDs;
         this.conn = conn;
         //getContentPane().setLayout(new FlowLayout()); 
@@ -110,7 +111,7 @@ public class RecruitPage extends JFrame {
 				toSay = textField_6.getText();
 
 				//連接的資料庫&資料庫名稱?
-				try(Connection conn = DriverManager.getConnection()){
+				try(Connection conn = DriverManager.getConnection(user.url, user.username, user.password)){
 					String query = "INSERT INTO databaseName (groupName, groupLeader, department, studentID, currentMember, recruitNumber, toSay) VALUES (?, ?, ?, ?, ?, ?, ?)";
 					PreparedStatement stmt = conn.prepareStatement(query);
 
