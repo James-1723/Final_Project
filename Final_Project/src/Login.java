@@ -66,7 +66,7 @@ public class Login extends JFrame {
 					user.checkPassword(ac, pw);
 					main = new MainPage(); 
 					main.setDefaultCloseOperation(EXIT_ON_CLOSE);
-					main.setAccount(user); //*User ID to main page*/
+					//main.setAccount(user); //*User ID to main page*/
 					main.setVisible(true);
 					main.setSize(600, 500);
 
