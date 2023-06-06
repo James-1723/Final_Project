@@ -10,6 +10,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+
+import com.mysql.cj.protocol.a.SqlDateValueEncoder;
+
 import java.sql.*;
 //似乎只要import上面這個就好
 //import com.mysql.cj.jdbc.result.ResultSetMetaData;
@@ -46,68 +49,69 @@ public class MainPage extends JFrame {
 					try (Connection conn = DriverManager.getConnection(user.url, user.username, user.password)) {
 
 						query = "SELECT * FROM `Course_List` WHERE CourseID LIKE ? OR CourseName LIKE ? OR Teacher LIKE ?";
+						// DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","n2431836");
+						PreparedStatement stat = conn.prepareStatement(query);// 互動性資料 index從1開始
+						stat.setString(1, "%" + search + "%");// 有出現search就會抓回來
+						stat.setString(2, "%" + search + "%");// _r% _是single character
+						stat.setString(3, "%" + search + "%");
+						ResultSet rs = stat.executeQuery(); // execute()回傳boolean, executeUpdate()回傳int 影響資料數
+						
+						DefaultTableModel model = new DefaultTableModel() {
 
+							// 指定每一欄的類型
+							public Class<?> getColumnClass(int columnIndex) {
+								if (columnIndex == 0) {
+									return Boolean.class; // 第一欄設為布林類型
+								} else {
+									return super.getColumnClass(columnIndex);
+								}
+							}
+	
+							// 指定哪些欄位是可以編輯的
+							public boolean isCellEditable(int row, int column) {
+								return column == 0; // 只有第一欄是可編輯的
+							}
+						};
+	
+						model.addColumn("Select"); // 新增布林欄位
+	
+						ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
+						int cols = rsmd.getColumnCount();
+	
+						// 加入欄位名稱
+						for (int i = 1; i <= cols; i++) {
+							model.addColumn(rsmd.getColumnName(i));
+						}
+	
+						// 加入資料 要先創建每一行
+						while (rs.next()) {
+							Object[] rows = new Object[cols + 1]; // 創建原database資料的欄位數加一
+							rows[0] = false; // 預設未選中
+							for (int i = 1; i <= cols; i++) {
+								rows[i] = rs.getObject(i);// 將每一行添加到row
+							}
+							model.addRow(rows);
+						}
+	
+						table_1.setModel(model);
+	
+						// 在每一行前面加 JCheckBox
+						TableColumnModel columnModel = table_1.getColumnModel();// 取得負責管理表格的欄位設置
+						TableColumn checkBoxColumn = columnModel.getColumn(0);// 取得欄位0 就是整欄的checkBox
+						checkBoxColumn.setCellEditor(new DefaultCellEditor(new JCheckBox()));// 設置欄位編輯器是預設的，並初始化
+						checkBoxColumn.setCellRenderer(table_1.getDefaultRenderer(Boolean.class));
+	
+						stat.close();
+						conn.close();
 					} catch (Exception se) {
 
 						se.printStackTrace();
 
 					}
-					// DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","n2431836");
-					PreparedStatement stat = conn.prepareStatement(query);// 互動性資料 index從1開始
-					stat.setString(1, "%" + search + "%");// 有出現search就會抓回來
-					stat.setString(2, "%" + search + "%");// _r% _是single character
-					stat.setString(3, "%" + search + "%");
-					ResultSet rs = stat.executeQuery(); // execute()回傳boolean, executeUpdate()回傳int 影響資料數
 
-					DefaultTableModel model = new DefaultTableModel() {
-
-						// 指定每一欄的類型
-						public Class<?> getColumnClass(int columnIndex) {
-							if (columnIndex == 0) {
-								return Boolean.class; // 第一欄設為布林類型
-							} else {
-								return super.getColumnClass(columnIndex);
-							}
-						}
-
-						// 指定哪些欄位是可以編輯的
-						public boolean isCellEditable(int row, int column) {
-							return column == 0; // 只有第一欄是可編輯的
-						}
-					};
-
-					model.addColumn("Select"); // 新增布林欄位
-
-					ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
-					int cols = rsmd.getColumnCount();
-
-					// 加入欄位名稱
-					for (int i = 1; i <= cols; i++) {
-						model.addColumn(rsmd.getColumnName(i));
-					}
-
-					// 加入資料 要先創建每一行
-					while (rs.next()) {
-						Object[] rows = new Object[cols + 1]; // 創建原database資料的欄位數加一
-						rows[0] = false; // 預設未選中
-						for (int i = 1; i <= cols; i++) {
-							rows[i] = rs.getObject(i);// 將每一行添加到row
-						}
-						model.addRow(rows);
-					}
-
-					table_1.setModel(model);
-
-					// 在每一行前面加 JCheckBox
-					TableColumnModel columnModel = table_1.getColumnModel();// 取得負責管理表格的欄位設置
-					TableColumn checkBoxColumn = columnModel.getColumn(0);// 取得欄位0 就是整欄的checkBox
-					checkBoxColumn.setCellEditor(new DefaultCellEditor(new JCheckBox()));// 設置欄位編輯器是預設的，並初始化
-					checkBoxColumn.setCellRenderer(table_1.getDefaultRenderer(Boolean.class));
-
-					stat.close();
-					conn.close();
-				} catch (SQLException e1) {
-					e1.printStackTrace();
+					
+				} catch (Exception a) {
+					a.printStackTrace();
 				}
 			}
 		});
@@ -221,7 +225,7 @@ public class MainPage extends JFrame {
 			// DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","n2431836");
 			String query = "SELECT * FROM `Course_List` ";
 			PreparedStatement stat = conn.prepareStatement(query);
-			ResultSet rs = stat.executeQuery();
+			ResultSet rs = stat.executeQuery(query);
 
 			DefaultTableModel model = new DefaultTableModel() {
 
