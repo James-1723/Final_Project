@@ -11,32 +11,36 @@ public class User {
 	public String server = "jdbc:mysql://140.119.19.73:3315/";
 	public String database = "111306017"; // change to your own database
 	public String url = server + database + "?useSSL=false";
-	public String username = "111306017"; // change to your own user name
+	public String usernameLogin = "111306017"; // change to your own user name
 	public String password = "9ftmc"; // change to your own password　　
 	public int numberInRow; //How many students are in the enrolled list
 	public Connection conn;
 	public Statement stat;
 	public ResultSet result;
-	private int indexA, indexB;
+
+	//*User's Info */
+	public String userAccount;
+	public String userName;
+	public String userDep;
+	//private int indexA, indexB;
 
 	public User() {
 
-		indexA = 0;
-		indexB = 0;
+		//indexA = 0;
+		//indexB = 0;
 		accounts = new ArrayList<String>();
 		passwords = new ArrayList<String>();
-		System.out.println("--------------");
 
 		try {
 			
-			this.conn = DriverManager.getConnection(url, username, password);
+			this.conn = DriverManager.getConnection(url, usernameLogin, password);
 			this.stat = conn.createStatement();
 			this.result = stat.getResultSet();
 			//this.metaData = this.result.getMetaData();
-			System.out.println("AAAAAAAAAAAAAAAAAAA");
+			System.out.println("Success");
 
 		} catch (Exception c) {
-			System.out.println("BBBBBBBBBB");
+			System.out.println("Failed");
 			System.out.println(c.getMessage());
 			
 		}
@@ -80,7 +84,7 @@ public class User {
 
 	public void checkAccountExist(String account, Statement stats) throws AccountError, SQLException {
 
-		indexA = 0;
+		//indexA = 0;
 
 		try {
 			
@@ -91,13 +95,14 @@ public class User {
 			while (result.next()) {
 				
 				String accountOnAir = result.getString("ID");
-				System.out.println(accountOnAir);
-				indexA++;
+				//System.out.println(accountOnAir);
+				//indexA++;
 
 				if (account.equals(accountOnAir)) {
 					
 					checker = true;
 					break;
+					
 				}
 
 			}
@@ -119,18 +124,59 @@ public class User {
 
 	public void checkPassword(String account, String password) throws PasswordError {
 
-		indexB = 0;
+		//indexB = 0;
 
 		try {
 
 			String query = String.format("SELECT Password FROM Student_Info");
 			result = this.stat.executeQuery(query);
 			boolean checker = false;
+			//* */
+			//String air
+			query = String.format("SELECT Password FROM Student_Info WHERE ID='%s'", account);
+			ResultSet r = this.stat.executeQuery(query);
+			while (r.next()) {
 
-			while (result.next()) {
+				String pw = r.getString("Password");
+				if (pw.equals(password)) {
+					System.out.println("Air: " + pw + " / local: " + password);
+					checker = true;
+				}
+
+			}
+
+			if (checker) {
+				
+				this.userAccount = account;
+
+				query = String.format("SELECT Name FROM Student_Info WHERE ID='%s'", account);
+				r = this.stat.executeQuery(query);
+				while (r.next()) {
+					
+					this.userName = r.getString("Name");
+
+				}
+
+				query = String.format("SELECT Department FROM Student_Info WHERE ID='%s'", account);
+				r = this.stat.executeQuery(query);
+				while (r.next()) {
+					
+					this.userDep = r.getString("Department");
+
+				}
+
+			}
+
+			if (checker == false) {
+				
+				throw new PasswordError("Wrong Password");
+
+			}
+
+			/*while (result.next()) {
 				
 				String pwOnAir = result.getString("Password");
-				System.out.println(pwOnAir);
+				//System.out.println(pwOnAir);
 				indexB++;
 
 				if (password.equals(pwOnAir)) {
@@ -148,9 +194,7 @@ public class User {
 				
 				throw new PasswordError("Wrong Password");
 
-			}
-
-			
+			}*/
 			
 			
 		} catch (SQLException e) {

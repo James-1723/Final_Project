@@ -21,7 +21,6 @@ public class Login extends JFrame {
 	public String DBpassword = "9ftmc"; // change to your own password
 
 	public Login() {
-		System.out.println("--------------");
 		account = new JTextField(10);
 		password = new JTextField(10);
 		studentName = new JTextField(10);
@@ -67,8 +66,9 @@ public class Login extends JFrame {
 					user.stat = user.conn.createStatement();
 					user.checkAccountExist(ac, user.stat);
 					user.checkPassword(ac, pw);
-					main = new MainPage();
+					main = new MainPage(); 
 					main.setDefaultCloseOperation(EXIT_ON_CLOSE);
+					//main.setAccount(user); //*User ID to main page*/
 					main.setVisible(true);
 					main.setSize(600, 500);
 
