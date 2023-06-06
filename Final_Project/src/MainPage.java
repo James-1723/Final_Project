@@ -11,7 +11,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import com.mysql.cj.protocol.a.SqlDateValueEncoder;
 
 import java.sql.*;
 //似乎只要import上面這個就好

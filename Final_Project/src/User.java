@@ -17,15 +17,14 @@ public class User {
 	public Connection conn;
 	public Statement stat;
 	public ResultSet result;
-	private int indexA, indexB;
+	//private int indexA, indexB;
 
 	public User() {
 
-		indexA = 0;
-		indexB = 0;
+		//indexA = 0;
+		//indexB = 0;
 		accounts = new ArrayList<String>();
 		passwords = new ArrayList<String>();
-		System.out.println("--------------");
 
 		try {
 			
@@ -33,10 +32,10 @@ public class User {
 			this.stat = conn.createStatement();
 			this.result = stat.getResultSet();
 			//this.metaData = this.result.getMetaData();
-			System.out.println("AAAAAAAAAAAAAAAAAAA");
+			System.out.println("Success");
 
 		} catch (Exception c) {
-			System.out.println("BBBBBBBBBB");
+			System.out.println("Failed");
 			System.out.println(c.getMessage());
 			
 		}
@@ -80,7 +79,7 @@ public class User {
 
 	public void checkAccountExist(String account, Statement stats) throws AccountError, SQLException {
 
-		indexA = 0;
+		//indexA = 0;
 
 		try {
 			
@@ -91,8 +90,8 @@ public class User {
 			while (result.next()) {
 				
 				String accountOnAir = result.getString("ID");
-				System.out.println(accountOnAir);
-				indexA++;
+				//System.out.println(accountOnAir);
+				//indexA++;
 
 				if (account.equals(accountOnAir)) {
 					
@@ -119,18 +118,36 @@ public class User {
 
 	public void checkPassword(String account, String password) throws PasswordError {
 
-		indexB = 0;
+		//indexB = 0;
 
 		try {
 
 			String query = String.format("SELECT Password FROM Student_Info");
 			result = this.stat.executeQuery(query);
 			boolean checker = false;
+			//* */
+			String air = String.format("SELECT Password FROM Student_Info WHERE ID='%s'", account);
+			ResultSet r = this.stat.executeQuery(air);
+			while (r.next()) {
 
-			while (result.next()) {
+				String pw = r.getString("Password");
+				if (pw.equals(password)) {
+					System.out.println("Air: " + pw + " / local: " + password);
+					checker = true;
+				}
+
+			}
+
+			if (checker == false) {
+				
+				throw new PasswordError("Wrong Password");
+
+			}
+
+			/*while (result.next()) {
 				
 				String pwOnAir = result.getString("Password");
-				System.out.println(pwOnAir);
+				//System.out.println(pwOnAir);
 				indexB++;
 
 				if (password.equals(pwOnAir)) {
@@ -148,9 +165,7 @@ public class User {
 				
 				throw new PasswordError("Wrong Password");
 
-			}
-
-			
+			}*/
 			
 			
 		} catch (SQLException e) {

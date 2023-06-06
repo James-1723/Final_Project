@@ -21,7 +21,6 @@ public class Login extends JFrame {
 	
 	
 	public Login() {
-		System.out.println("--------------");
 		account = new JTextField(10);
 		password = new JTextField(10);
 		studentName = new JTextField(10);
