@@ -3,8 +3,7 @@ import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Vector;
+
 
 public class My_status extends JFrame{
 	private Connection conn;
@@ -32,7 +31,7 @@ public class My_status extends JFrame{
 			// 定義表格的數據
 			
 			// 創建一個新的JTable實例
-			join = new JTable(data, columnNames);
+			//*join = new JTable(data, columnNames);
 			}
 
 			// 定義表格的標題
@@ -44,7 +43,7 @@ public class My_status extends JFrame{
 				// 定義表格的數據
 				
 				// 把數據加入表格
-				recruit = new JTable(data2, columnNames2);
+				//*recruit = new JTable(data2, columnNames2);
 				}
 			
 			

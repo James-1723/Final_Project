@@ -18,21 +18,16 @@ public class Login extends JFrame {
 	public String url = server + database + "?useSSL=false";
 	public String username = "111306017"; // change to your own user name
 	public String DBpassword = "9ftmc"; // change to your own password
-
+	
+	
 	public Login() {
-		User user = new User();
+		System.out.println("--------------");
 		account = new JTextField(10);
 		password = new JTextField(10);
 		studentName = new JTextField(10);
 		enroll = new JButton("enroll");
 		login = new JButton("login");
-
-		// *下面這行只是方便我改其他地方臨時加的 */
-		// String studentName = "Aloha";
-		// *這邊幫我加一下學生姓名的UI */
-
-		// *在幫我額外加一個學生的系別UI */
-		//int department = 200;
+		User user = new User();
 
 		createLayout();
 		setSize(600, 400);
@@ -45,6 +40,7 @@ public class Login extends JFrame {
 				String pw = password.getText();
 				String stuName = studentName.getText();
 				String dep = (String) jComboBox.getSelectedItem();
+
 				try {
 
 					user.add(stuName, dep, ac, pw);
@@ -58,19 +54,30 @@ public class Login extends JFrame {
 		});
 
 		login.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
+
 				String ac = account.getText();
 				String pw = password.getText();
 
 				try {
-					user.checkAccountExist(ac);
+
+					user.stat = user.conn.createStatement();
+					user.checkAccountExist(ac, user.stat);
 					user.checkPassword(ac, pw);
 					main = new MainPage();
 					main.setDefaultCloseOperation(EXIT_ON_CLOSE);
 					main.setVisible(true);
 					main.setSize(600, 500);
+
 				} catch (AccountError | PasswordError e1) {
+
 					JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
+				} catch (SQLException k) {
+
+					k.getMessage();
+
 				}
 			}
 		});
