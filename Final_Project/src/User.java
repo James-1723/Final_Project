@@ -19,7 +19,7 @@ public class User {
 	public ResultSet result;
 
 	//*User's Info */
-	public String userAccount;
+		public String userAccount;
 	public String userName;
 	public String userDep;
 	//private int indexA, indexB;
