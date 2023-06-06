@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import com.mysql.cj.protocol.a.SqlDateValueEncoder;
 
 import java.sql.*;
 //似乎只要import上面這個就好
@@ -45,7 +46,7 @@ public class MainPage extends JFrame {
 
 				try {
 					// Class.forName("com.mysql.cj.jdbc.Driver");
-					try (Connection conn = DriverManager.getConnection(user.url, user.username, user.password)) {
+					try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
 
 						query = "SELECT * FROM `Course_List` WHERE CourseID LIKE ? OR CourseName LIKE ? OR Teacher LIKE ?";
 						// DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","n2431836");
@@ -157,7 +158,7 @@ public class MainPage extends JFrame {
 					JOptionPane.showMessageDialog(null, "Select some courses!", "Error", JOptionPane.ERROR_MESSAGE);
 
 				} else {
-					RecruitPage recruit = new RecruitPage(selectedIDs, conn);
+					RecruitPage recruit = new RecruitPage(user); //*Send user acount in */
 					recruit.setVisible(true);
 					recruit.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					recruit.setSize(600, 500);
@@ -218,7 +219,7 @@ public class MainPage extends JFrame {
 	}
 
 	public void showAll() {
-		try (Connection conn = DriverManager.getConnection(user.url, user.username, user.password)) {
+		try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
 			// Class.forName("com.mysql.cj.jdbc.Driver");
 			// conn =
 			// DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","n2431836");
@@ -296,6 +297,12 @@ public class MainPage extends JFrame {
 		downPanel.add(recruit);
 		downPanel.add(myStatus);
 		getContentPane().add(downPanel, BorderLayout.SOUTH);
+	}
+
+	public void setAccount(User localUser) {
+
+		this.user = localUser;
+
 	}
 
 }

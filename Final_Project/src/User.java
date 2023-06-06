@@ -11,12 +11,17 @@ public class User {
 	public String server = "jdbc:mysql://140.119.19.73:3315/";
 	public String database = "111306017"; // change to your own database
 	public String url = server + database + "?useSSL=false";
-	public String username = "111306017"; // change to your own user name
+	public String usernameLogin = "111306017"; // change to your own user name
 	public String password = "9ftmc"; // change to your own password　　
 	public int numberInRow; //How many students are in the enrolled list
 	public Connection conn;
 	public Statement stat;
 	public ResultSet result;
+
+	//*User's Info */
+	public String userAccount;
+	public String userName;
+	public String userDep;
 	//private int indexA, indexB;
 
 	public User() {
@@ -28,7 +33,7 @@ public class User {
 
 		try {
 			
-			this.conn = DriverManager.getConnection(url, username, password);
+			this.conn = DriverManager.getConnection(url, usernameLogin, password);
 			this.stat = conn.createStatement();
 			this.result = stat.getResultSet();
 			//this.metaData = this.result.getMetaData();
@@ -97,6 +102,7 @@ public class User {
 					
 					checker = true;
 					break;
+					
 				}
 
 			}
@@ -126,14 +132,37 @@ public class User {
 			result = this.stat.executeQuery(query);
 			boolean checker = false;
 			//* */
-			String air = String.format("SELECT Password FROM Student_Info WHERE ID='%s'", account);
-			ResultSet r = this.stat.executeQuery(air);
+			//String air
+			query = String.format("SELECT Password FROM Student_Info WHERE ID='%s'", account);
+			ResultSet r = this.stat.executeQuery(query);
 			while (r.next()) {
 
 				String pw = r.getString("Password");
 				if (pw.equals(password)) {
 					System.out.println("Air: " + pw + " / local: " + password);
 					checker = true;
+				}
+
+			}
+
+			if (checker) {
+				
+				this.userAccount = account;
+
+				query = String.format("SELECT Name FROM Student_Info WHERE ID='%s'", account);
+				r = this.stat.executeQuery(query);
+				while (r.next()) {
+					
+					this.userName = r.getString("Name");
+
+				}
+
+				query = String.format("SELECT Department FROM Student_Info WHERE ID='%s'", account);
+				r = this.stat.executeQuery(query);
+				while (r.next()) {
+					
+					this.userDep = r.getString("Department");
+
 				}
 
 			}
