@@ -9,6 +9,7 @@ import java.sql.*;
 //9ftmc
 public class Login extends JFrame {
 
+	final private Font mainFont = new Font("Segoe print", Font.BOLD, 16);
 	private MainPage main;
 	private JTextField account, password, studentName;
 	private JButton enroll, login;
@@ -18,15 +19,16 @@ public class Login extends JFrame {
 	public String url = server + database + "?useSSL=false";
 	public String username = "111306017"; // change to your own user name
 	public String DBpassword = "9ftmc"; // change to your own password
-	
-	
+
 	public Login() {
 		System.out.println("--------------");
 		account = new JTextField(10);
 		password = new JTextField(10);
 		studentName = new JTextField(10);
 		enroll = new JButton("enroll");
+		enroll.setFont(mainFont);
 		login = new JButton("login");
+		login.setFont(mainFont);
 		User user = new User();
 
 		createLayout();
