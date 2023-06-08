@@ -1,22 +1,9 @@
 import java.awt.*;
-
-import java.awt.Color;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-
 import java.awt.event.*;
-import java.awt.event.FocusListener;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
-
-import com.mysql.cj.protocol.a.SqlDateValueEncoder;
-
-import java.sql.*;
-//似乎只要import上面這個就好
-//import com.mysql.cj.jdbc.result.ResultSetMetaData;
-
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -24,7 +11,6 @@ public class MainPage extends JFrame {
 	private JLabel searchLabel;
 	private JTextField searchField;
 	private JScrollPane scrollPane;
-	private Connection conn;
 	private JButton join, recruit, myStatus, searchButton, showAll;
 	private ArrayList<Integer> selectedIDs;
 	private JTable table_1;
@@ -126,12 +112,13 @@ public class MainPage extends JFrame {
 						selectedIDs.add(courseID);
 					}
 				}
-
+				
 				if (selectedIDs.isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Select some courses!", "Error", JOptionPane.ERROR_MESSAGE);
 				} else {
 					try {
-						JoinPage join = new JoinPage(selectedIDs, conn);
+						JoinPage join = new JoinPage(selectedIDs);
+						System.out.println("成功");
 						join.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 						join.setVisible(true);
 						join.setSize(900, 500);
@@ -156,7 +143,6 @@ public class MainPage extends JFrame {
 				}
 				if (selectedIDs.isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Select some courses!", "Error", JOptionPane.ERROR_MESSAGE);
-
 				} else {
 					RecruitPage recruit = new RecruitPage(user); //*Send user acount in */
 					recruit.setVisible(true);
@@ -220,13 +206,9 @@ public class MainPage extends JFrame {
 
 	public void showAll() {
 		try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
-			// Class.forName("com.mysql.cj.jdbc.Driver");
-			// conn =
-			// DriverManager.getConnection("jdbc:mysql://localhost:3306/finalproject","root","n2431836");
 			String query = "SELECT * FROM `Course_List` ";
 			PreparedStatement stat = conn.prepareStatement(query);
 			ResultSet rs = stat.executeQuery(query);
-
 			DefaultTableModel model = new DefaultTableModel() {
 
 				// 指定每一欄的類型

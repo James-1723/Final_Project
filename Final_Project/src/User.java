@@ -44,9 +44,6 @@ public class User {
 			System.out.println(c.getMessage());
 			
 		}
-
-		//connection();
-	
 	}
 
 	public void add(String studentName, String department, String account, String pw) throws AccountError {
