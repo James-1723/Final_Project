@@ -1,5 +1,6 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
@@ -9,9 +10,9 @@ public class My_status extends JFrame {
 	private JTable join_table, recruit_table;
 	private JLabel join_status, recruit_status;
 	private JScrollPane scrollPane_1, scrollPane_2;
-	private JButton back,submit;
+	private JButton back, submit;
 	private MainPage main = new MainPage();
-
+	private JPanel bPanel;
 
 	public My_status() {
 		setTitle("My Status");
@@ -28,14 +29,31 @@ public class My_status extends JFrame {
 		});
 
 		submit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
-				
+			public void actionPerformed(ActionEvent e) {
+				JDialog.setDefaultLookAndFeelDecorated(true);
+				int response = JOptionPane.showConfirmDialog(null,
+						"just to make sure you won't regrate to recruit them.", "Confirm",
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (response == JOptionPane.NO_OPTION) {
+					System.out.println("No button is clicked");
+				} else if (response == JOptionPane.YES_OPTION) {
+					/*增加添加組員功能
+					 * 
+					 * 
+					 */
+					JOptionPane.showMessageDialog(null, "You have successfully added the members!",
+                "Success", JOptionPane.INFORMATION_MESSAGE);
+					
+				} else if (response == JOptionPane.CLOSED_OPTION) {
+					System.out.println("JOptionPane closed");
+				}
 			}
 		});
 	}
 
 	public void createLayout() {
 		back = new JButton("back");
+		submit = new JButton("submit");
 
 		join_table = new JTable();
 		recruit_table = new JTable();
@@ -48,11 +66,15 @@ public class My_status extends JFrame {
 		BoxLayout boxLayout = new BoxLayout(getContentPane(), BoxLayout.Y_AXIS);
 		setLayout(boxLayout);
 
+		bPanel = new JPanel();
+		bPanel.add(back);
+		bPanel.add(submit);
+
 		add(join_status);
 		add(scrollPane_1);
 		add(recruit_status);
 		add(scrollPane_2);
-		add(back);
+		add(bPanel);
 	}
 
 	public void createTable() {
