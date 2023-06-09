@@ -1,5 +1,7 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 
 public class My_status extends JFrame {
@@ -7,14 +9,34 @@ public class My_status extends JFrame {
 	private JTable join_table, recruit_table;
 	private JLabel join_status, recruit_status;
 	private JScrollPane scrollPane_1, scrollPane_2;
+	private JButton back,submit;
+	private MainPage main = new MainPage();
+
 
 	public My_status() {
 		setTitle("My Status");
 		createLayout();
 		createTable();
+
+		back.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				main.setDefaultCloseOperation(EXIT_ON_CLOSE);
+				main.setVisible(true);
+				main.setSize(600, 500);
+				My_status.this.dispose();
+			}
+		});
+
+		submit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e){
+				
+			}
+		});
 	}
 
 	public void createLayout() {
+		back = new JButton("back");
+
 		join_table = new JTable();
 		recruit_table = new JTable();
 		join_status = new JLabel("join_status");
@@ -30,6 +52,7 @@ public class My_status extends JFrame {
 		add(scrollPane_1);
 		add(recruit_status);
 		add(scrollPane_2);
+		add(back);
 	}
 
 	public void createTable() {

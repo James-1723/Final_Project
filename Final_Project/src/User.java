@@ -18,16 +18,11 @@ public class User {
 	public Statement stat;
 	public ResultSet result;
 
-	//*User's Info */
-		public String userAccount;
+	public String userAccount;
 	public String userName;
 	public String userDep;
-	//private int indexA, indexB;
 
 	public User() {
-
-		//indexA = 0;
-		//indexB = 0;
 		accounts = new ArrayList<String>();
 		passwords = new ArrayList<String>();
 
@@ -36,11 +31,9 @@ public class User {
 			this.conn = DriverManager.getConnection(url, usernameLogin, password);
 			this.stat = conn.createStatement();
 			this.result = stat.getResultSet();
-			//this.metaData = this.result.getMetaData();
-			System.out.println("Success");
+			//this.metaData = this.result.getMetaData();\
 
 		} catch (Exception c) {
-			System.out.println("Failed");
 			System.out.println(c.getMessage());
 			
 		}
