@@ -26,17 +26,18 @@ public class JoinPage extends JFrame {
 		this.setTitle("JoinPage");
 		result = null;
 		this.checkBoxes = new JCheckBox[selectedIDs.size()];
-		System.out.println(selectedIDs.size());
+		System.out.println(checkBoxes.length);
 
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				for (int i = 0; i < checkBoxes.length; i++) {
 					checkBoxes[i] = new JCheckBox();
 					final int index = i;
-					checkBoxes[index].addItemListener(new ItemListener() {// 選出被選到的course
+
+					checkBoxes[index].addItemListener(new ItemListener(){// 選出被選到的course
 						public void itemStateChanged(ItemEvent e) {// itemStateChanged checkBoxes[i]狀態改變
 							System.out.println("this");
-							if (e.getStateChange() == ItemEvent.SELECTED) {
+							if (e.getStateChange() == ItemEvent.SELECTED){
 								System.out.print("mails");
 								try {
 									if (result.absolute(index + 4)) {
@@ -50,7 +51,7 @@ public class JoinPage extends JFrame {
 												sb.append(",");
 											}
 										}
-									}
+									}									
 								} catch (SQLException e1) {
 									e1.printStackTrace();
 								}
@@ -93,7 +94,6 @@ public class JoinPage extends JFrame {
 	public void showTable() {
 
 		try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
-
 			StringBuilder sb = new StringBuilder();
 			for (Integer courseID : courseIDs) {
 				if (courseID != null) {
@@ -101,7 +101,6 @@ public class JoinPage extends JFrame {
 					sb.append(",");
 				}
 			}
-
 			String courseIDString = sb.toString(); // 把 courseID 變字串
 			if (!courseIDString.isEmpty()) {
 				courseIDString = courseIDString.substring(0, courseIDString.length() - 1); // 移除最后一个逗號

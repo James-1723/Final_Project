@@ -4,6 +4,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.awt.Color;
 
 public class My_status extends JFrame {
 	private User user = new User();
@@ -37,13 +38,14 @@ public class My_status extends JFrame {
 				if (response == JOptionPane.NO_OPTION) {
 					System.out.println("No button is clicked");
 				} else if (response == JOptionPane.YES_OPTION) {
-					/*增加添加組員功能
+					/*
+					 * 增加添加組員功能
 					 * 
 					 * 
 					 */
 					JOptionPane.showMessageDialog(null, "You have successfully added the members!",
-                "Success", JOptionPane.INFORMATION_MESSAGE);
-					
+							"Success", JOptionPane.INFORMATION_MESSAGE);
+
 				} else if (response == JOptionPane.CLOSED_OPTION) {
 					System.out.println("JOptionPane closed");
 				}
@@ -64,17 +66,18 @@ public class My_status extends JFrame {
 		scrollPane_2 = new JScrollPane(recruit_table);
 
 		BoxLayout boxLayout = new BoxLayout(getContentPane(), BoxLayout.Y_AXIS);
-		setLayout(boxLayout);
+		getContentPane().setLayout(boxLayout);
 
 		bPanel = new JPanel();
+		bPanel.setBackground(new Color(210, 212, 207));
 		bPanel.add(back);
 		bPanel.add(submit);
 
-		add(join_status);
-		add(scrollPane_1);
-		add(recruit_status);
-		add(scrollPane_2);
-		add(bPanel);
+		getContentPane().add(join_status);
+		getContentPane().add(scrollPane_1);
+		getContentPane().add(recruit_status);
+		getContentPane().add(scrollPane_2);
+		getContentPane().add(bPanel);
 	}
 
 	public void createTable() {
@@ -88,7 +91,6 @@ public class My_status extends JFrame {
 					return super.getColumnClass(columnIndex);
 				}
 			};
-
 			ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
 			int cols = rsmd.getColumnCount();
 
