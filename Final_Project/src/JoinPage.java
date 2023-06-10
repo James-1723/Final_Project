@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+
 import java.util.ArrayList;
 import java.awt.event.*;
 
@@ -11,19 +12,19 @@ public class JoinPage extends JFrame {
 	private JButton submit, back;
 	private JCheckBox[] checkBoxes;
 	private JScrollPane scrollPane;
-	private ArrayList<Integer> checkList, selectedCourseNum;
+	private ArrayList<Integer> courseIDs, selectedCourseNum;
 	private ResultSet result;
 	private JTable joinTable;
 	private User user = new User();
 	private MainPage main = new MainPage();
 
-	public JoinPage(ArrayList checkList) throws SQLException {
+	public JoinPage(ArrayList<Integer> selectedIDs) throws SQLException {
 		createButton();
 		createLayout();
+		this.courseIDs = new ArrayList<>(selectedIDs);
 		showTable();
-		this.checkList = checkList;
+		
 		this.setTitle("JoinPage");
-		selectedCourseNum = new ArrayList<Integer>();
 
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -82,7 +83,23 @@ public class JoinPage extends JFrame {
 	public void showTable() {
 
 		try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
-			String query = "SELECT * FROM `GroupList`";
+
+			StringBuilder sb = new StringBuilder();
+			for (Integer courseID : courseIDs) {
+				if (courseID != null) {
+					sb.append(courseID);
+					sb.append(",");
+				}
+			}
+
+			String courseIDString = sb.toString(); // 把 courseID 變字串
+			if (!courseIDString.isEmpty()) {
+				courseIDString = courseIDString.substring(0, courseIDString.length() - 1); // 移除最后一个逗號
+			}
+
+			System.out.println(courseIDString);
+
+			String query = "SELECT * FROM `GroupList` WHERE `GroupID` IN (" + courseIDString + ")";
 			PreparedStatement stat = conn.prepareStatement(query);
 			ResultSet rs = stat.executeQuery(query);
 
@@ -127,17 +144,10 @@ public class JoinPage extends JFrame {
 			TableColumn checkBoxColumn = columnModel.getColumn(0);// 取得欄位0 就是整欄的checkBox
 			checkBoxColumn.setCellEditor(new DefaultCellEditor(new JCheckBox()));// 設置欄位編輯器是預設的，並初始化
 			checkBoxColumn.setCellRenderer(joinTable.getDefaultRenderer(Boolean.class));
-			try {
-				stat.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			
+			rs.close();
+			stat.close();
 
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}

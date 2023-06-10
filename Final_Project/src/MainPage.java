@@ -103,7 +103,7 @@ public class MainPage extends JFrame {
 		join.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int columnCount = table_1.getRowCount();
-				selectedIDs = new ArrayList<>();
+				selectedIDs = new ArrayList<Integer>();
 				for (int i = 0; i < columnCount; i++) {
 					Boolean selected = (Boolean) table_1.getValueAt(i, 0); // 第i行第0列 就是checkBox
 					if (selected) {
@@ -115,12 +115,19 @@ public class MainPage extends JFrame {
 				if (selectedIDs.isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Select some courses!", "Error", JOptionPane.ERROR_MESSAGE);
 				} else {
+					
 					try {
+						
 						JoinPage join = new JoinPage(selectedIDs);
-						System.out.println("成功");
 						join.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-						join.setVisible(true);
 						join.setSize(900, 500);
+						join.setVisible(true);
+						
+						System.out.println(selectedIDs);
+							System.out.println("oooooooooooo");
+							System.out.println("courseIDs size: " + selectedIDs.size());
+
+
 					} catch (SQLException e1) {
 						e1.printStackTrace();
 					}

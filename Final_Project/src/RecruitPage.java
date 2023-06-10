@@ -132,17 +132,17 @@ public class RecruitPage extends JFrame {
 
 		JLabel lblNewLabel_4 = new JLabel("Curent Members:");
 		panel_4.add(lblNewLabel_4);
-		textField_4 = new JTextField(20);
+		textField_4 = new JTextField(17);
 		panel_4.add(textField_4);
 
 		JLabel lblNewLabel_5 = new JLabel("Recruit Numbers:");
 		panel_5.add(lblNewLabel_5);
-		textField_5 = new JTextField(20);
+		textField_5 = new JTextField(17);
 		panel_5.add(textField_5);
 
 		JLabel lblNewLabel_6 = new JLabel("Something need to know:");
 		panel_6.add(lblNewLabel_6);
-		textField_6 = new JTextField(20);
+		textField_6 = new JTextField(15);
 		panel_6.add(textField_6);
 
 		panel_7.add(postB);
