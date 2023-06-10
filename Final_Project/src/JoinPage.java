@@ -12,7 +12,7 @@ public class JoinPage extends JFrame {
 	private JButton submit, back;
 	private JCheckBox[] checkBoxes;
 	private JScrollPane scrollPane;
-	private ArrayList<Integer> courseIDs, selectedCourseNum;
+	private ArrayList<Integer> courseIDs, mails;
 	private ResultSet result;
 	private JTable joinTable;
 	private User user = new User();
@@ -31,15 +31,22 @@ public class JoinPage extends JFrame {
 				for (int i = 0; i < checkBoxes.length; i++) {
 					checkBoxes[i] = new JCheckBox();
 					final int index = i;
-					checkBoxes[index].addItemListener(new ItemListener() {
-						public void itemStateChanged(ItemEvent e) {
+					checkBoxes[index].addItemListener(new ItemListener() {//選出被選到的course
+						public void itemStateChanged(ItemEvent e) {//itemStateChanged checkBoxes[i]狀態改變
 							if (e.getStateChange() == ItemEvent.SELECTED) {
 								try {
-									if (result.absolute(index + 1)) {
-										int slctdGrpNum = result.getInt("ID");
-										selectedCourseNum.add(slctdGrpNum);// 存放組長學號
+									if (result.absolute(index + 4)) {
+										int mail = result.getInt("Leader_ID");
+										mails.add(mail);// 存放組長學號
 										// 寄送信
 										// 回到Main page
+										StringBuilder sb = new StringBuilder();
+										for (Integer oneMail : mails) {
+											if (oneMail != null) {
+												sb.append(oneMail);
+												sb.append(",");
+											}
+										}
 									}
 								} catch (SQLException e1) {
 									e1.printStackTrace();
@@ -96,8 +103,6 @@ public class JoinPage extends JFrame {
 			if (!courseIDString.isEmpty()) {
 				courseIDString = courseIDString.substring(0, courseIDString.length() - 1); // 移除最后一个逗號
 			}
-
-			System.out.println(courseIDString);
 
 			String query = "SELECT * FROM `GroupList` WHERE `GroupID` IN (" + courseIDString + ")";
 			PreparedStatement stat = conn.prepareStatement(query);
