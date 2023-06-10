@@ -41,7 +41,7 @@ public class MainPage extends JFrame {
 						stat.setString(2, "%" + search + "%");// _r% _是single character
 						stat.setString(3, "%" + search + "%");
 						ResultSet rs = stat.executeQuery(); // execute()回傳boolean, executeUpdate()回傳int 影響資料數
-						
+
 						DefaultTableModel model = new DefaultTableModel() {
 
 							// 指定每一欄的類型
@@ -52,23 +52,23 @@ public class MainPage extends JFrame {
 									return super.getColumnClass(columnIndex);
 								}
 							}
-	
+
 							// 指定哪些欄位是可以編輯的
 							public boolean isCellEditable(int row, int column) {
 								return column == 0; // 只有第一欄是可編輯的
 							}
 						};
-	
+
 						model.addColumn("Select"); // 新增布林欄位
-	
+
 						ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
 						int cols = rsmd.getColumnCount();
-	
+
 						// 加入欄位名稱
 						for (int i = 1; i <= cols; i++) {
 							model.addColumn(rsmd.getColumnName(i));
 						}
-	
+
 						// 加入資料 要先創建每一行
 						while (rs.next()) {
 							Object[] rows = new Object[cols + 1]; // 創建原database資料的欄位數加一
@@ -78,15 +78,15 @@ public class MainPage extends JFrame {
 							}
 							model.addRow(rows);
 						}
-	
+
 						table_1.setModel(model);
-	
+
 						// 在每一行前面加 JCheckBox
 						TableColumnModel columnModel = table_1.getColumnModel();// 取得負責管理表格的欄位設置
 						TableColumn checkBoxColumn = columnModel.getColumn(0);// 取得欄位0 就是整欄的checkBox
 						checkBoxColumn.setCellEditor(new DefaultCellEditor(new JCheckBox()));// 設置欄位編輯器是預設的，並初始化
 						checkBoxColumn.setCellRenderer(table_1.getDefaultRenderer(Boolean.class));
-	
+
 						stat.close();
 						conn.close();
 					} catch (Exception se) {
@@ -95,7 +95,6 @@ public class MainPage extends JFrame {
 
 					}
 
-					
 				} catch (Exception a) {
 					a.printStackTrace();
 				}
@@ -112,7 +111,7 @@ public class MainPage extends JFrame {
 						selectedIDs.add(courseID);
 					}
 				}
-				
+
 				if (selectedIDs.isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Select some courses!", "Error", JOptionPane.ERROR_MESSAGE);
 				} else {
@@ -144,7 +143,7 @@ public class MainPage extends JFrame {
 				if (selectedIDs.isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Select some courses!", "Error", JOptionPane.ERROR_MESSAGE);
 				} else {
-					RecruitPage recruit = new RecruitPage(user); //*Send user acount in */
+					RecruitPage recruit = new RecruitPage(user); // *Send user acount in */
 					recruit.setVisible(true);
 					recruit.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					recruit.setSize(600, 500);
@@ -263,6 +262,7 @@ public class MainPage extends JFrame {
 
 	public void createPanel() {
 		JPanel upPanel = new JPanel();
+		upPanel.setBackground(new Color(214, 218, 212));
 		upPanel.add(searchLabel);
 		upPanel.add(searchField);
 		upPanel.add(searchButton);
@@ -275,6 +275,8 @@ public class MainPage extends JFrame {
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
 
 		JPanel downPanel = new JPanel();
+		downPanel.setBackground(new Color(214, 218, 212));
+		downPanel.setForeground(new Color(76, 76, 72));
 		downPanel.add(join);
 		downPanel.add(recruit);
 		downPanel.add(myStatus);

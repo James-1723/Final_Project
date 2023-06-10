@@ -73,6 +73,7 @@ public class JoinPage extends JFrame {
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
 
 		JPanel downPanel = new JPanel();
+		downPanel.setBackground(new Color(214, 218, 212));
 		downPanel.add(submit);
 		downPanel.add(back);
 		getContentPane().add(downPanel, BorderLayout.SOUTH);

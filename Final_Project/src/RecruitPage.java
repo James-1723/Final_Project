@@ -6,18 +6,19 @@ import java.sql.*;
 import javax.swing.*;
 
 public class RecruitPage extends JFrame {
+	// private ArrayList<Integer>selectedIDs;
 	private JTextField textField, textField_1, textField_2, textField_3, textField_4, textField_5, textField_6;
-	private JButton postB, back;
+	private JButton postB,back;
 	private User user;
 	private MainPage main = new MainPage();
 
-	public RecruitPage(User user) {
+	public RecruitPage(User users) {
+		getContentPane().setBackground(new Color(214, 218, 212));
 		// this.selectedIDs = selectedIDs;
-		this.user = user;
+		this.user = users;
 		getContentPane().setLayout(new FlowLayout());
 		this.setTitle("Recruit Page");
 		createLayout();
-		createButton();
 
 		postB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -26,7 +27,7 @@ public class RecruitPage extends JFrame {
 				String q1 = textField_1.getText(); // *Leader_Name */
 				String q2 = textField_2.getText(); // *Department of the group leader */
 				String q3 = textField_3.getText(); // *Leader_ID */
-				String q4 = textField_4.getText(); // *who are current_members */
+				int q4 = Integer.parseInt(textField_4.getText()); // *Current_Size */
 				int q5 = Integer.parseInt(textField_5.getText()); // *Expected_Size */
 				String q6 = textField_6.getText(); // *Message */
 
@@ -42,7 +43,6 @@ public class RecruitPage extends JFrame {
 							q0, q1, q3, q2, q5, q4, q6);
 					stat.execute(selection);
 
-
 					MainPage main = new MainPage();
 					main.setDefaultCloseOperation(EXIT_ON_CLOSE);
 					main.setVisible(true);
@@ -57,80 +57,55 @@ public class RecruitPage extends JFrame {
 				// String query = query();
 			}
 		});
+
 		back.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e){
 				main.setDefaultCloseOperation(EXIT_ON_CLOSE);
 				main.setVisible(true);
 				main.setSize(600, 500);
-				RecruitPage.this.dispose();
+				dispose();
 			}
 		});
 	}
 
-	public void setAccount(User localUser) {
-
-		this.user = localUser;
-
-	}
-	/*
-	 * public String query() {
-	 * 
-	 * String q0 = textField.getText();
-	 * String q1 = textField_1.getText();
-	 * String q2 = textField_2.getText();
-	 * String q3 = textField_3.getText();
-	 * int q4 = Integer.parseInt(textField_4.getText());
-	 * int q5 = Integer.parseInt(textField_5.getText());
-	 * String q6 = textField_6.getText();
-	 * 
-	 * try {
-	 * 
-	 * user.stat = user.conn.createStatement();
-	 * String selection = "SELECT * FROM GroupList";
-	 * user.result = user.stat.executeQuery(selection);
-	 * selection = String.
-	 * format("INSERT INTO `GroupList` (GroupName, Leader_Name, Leader_ID, Department, Expected_Size, Current_Size, Message) VALUES('%s', '%s', '%s', '%s', %d, %d,'%s')"
-	 * , q0, q1, q3, q2, q5, q4, q6);
-	 * 
-	 * 
-	 * } catch (Exception e) {
-	 * e.printStackTrace();
-	 * }
-	 * 
-	 * String query = q0+q1+q2+q3+q4+q5+q6;
-	 * return query;
-	 * 
-	 * }
-	 */
-
-	public void createButton() {
-		postB = new JButton("post");
-		add(postB);
-		back = new JButton("back");
-		add(back);
-	}
-
+	
+	
 	public void createLayout() {
+		postB = new JButton("post");
+		getContentPane().add(postB);
+		back = new JButton("back");
+		getContentPane().add(back);
+
 		JPanel panel = new JPanel();
+		panel.setBackground(new Color(214, 218, 212));
 		panel.setBounds(56, 26, 303, 20);
 
 		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(new Color(214, 218, 212));
 		panel_1.setBounds(56, 66, 303, 10);
 
 		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(new Color(214, 218, 212));
 		panel_2.setBounds(56, 106, 303, 30);
 
 		JPanel panel_3 = new JPanel();
+		panel_3.setBackground(new Color(214, 218, 212));
 		panel_3.setBounds(56, 146, 303, 30);
 
 		JPanel panel_4 = new JPanel();
+		panel_4.setBackground(new Color(214, 218, 212));
 		panel_4.setBounds(56, 186, 303, 30);
 
 		JPanel panel_5 = new JPanel();
+		panel_5.setBackground(new Color(214, 218, 212));
 		panel_5.setBounds(56, 226, 303, 30);
 
 		JPanel panel_6 = new JPanel();
+		panel_6.setBackground(new Color(214, 218, 212));
 		panel_6.setBounds(56, 266, 303, 30);
+
+		JPanel panel_7 = new JPanel();
+		panel_7.setBackground(new Color(214, 218, 212));
 
 		JLabel lblNewLabel = new JLabel("Group Name:");
 		panel.add(lblNewLabel);
@@ -170,8 +145,12 @@ public class RecruitPage extends JFrame {
 		textField_6 = new JTextField(20);
 		panel_6.add(textField_6);
 
+		panel_7.add(postB);
+		panel_7.add(back);
+
+
 		JPanel allPanel = new JPanel();
-		allPanel.setLayout(new GridLayout(7, 1));
+		allPanel.setLayout(new GridLayout(8, 1));
 		allPanel.add(panel);
 		allPanel.add(panel_1);
 		allPanel.add(panel_2);
@@ -179,6 +158,7 @@ public class RecruitPage extends JFrame {
 		allPanel.add(panel_4);
 		allPanel.add(panel_5);
 		allPanel.add(panel_6);
+		allPanel.add(panel_7);
 		getContentPane().add(allPanel);
 	}
 }
