@@ -130,7 +130,7 @@ public class RecruitPage extends JFrame {
 		textField_3.setText(user.userAccount);// *user ac */
 		panel_3.add(textField_3);
 
-		JLabel lblNewLabel_4 = new JLabel("Current Members:");
+		JLabel lblNewLabel_4 = new JLabel("Current Members' names:");
 		panel_4.add(lblNewLabel_4);
 		textField_4 = new JTextField(17);
 		panel_4.add(textField_4);
