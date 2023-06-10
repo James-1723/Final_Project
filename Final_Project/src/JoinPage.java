@@ -34,8 +34,9 @@ public class JoinPage extends JFrame {
 					checkBoxes[i] = new JCheckBox();
 					final int index = i;
 
-					checkBoxes[index].addItemListener(new ItemListener(){// 選出被選到的course
+					checkBoxes[index].addItemListener(new ItemListener(){//選出被選到的course
 						public void itemStateChanged(ItemEvent e) {// itemStateChanged checkBoxes[i]狀態改變
+							System.out.println(e.getItem() + " " + e.getStateChange() );
 							System.out.println("this");
 							if (e.getStateChange() == ItemEvent.SELECTED){
 								System.out.print("mails");
@@ -106,7 +107,7 @@ public class JoinPage extends JFrame {
 				courseIDString = courseIDString.substring(0, courseIDString.length() - 1); // 移除最后一个逗號
 			}
 
-			String query = "SELECT * FROM `GroupList` WHERE `GroupID` IN (" + courseIDString + ")";
+			String query = "SELECT * FROM `GroupList` WHERE `CourseID` IN (" + courseIDString + ")";
 			PreparedStatement stat = conn.prepareStatement(query);
 			ResultSet rs = stat.executeQuery(query);
 
