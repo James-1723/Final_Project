@@ -120,14 +120,8 @@ public class MainPage extends JFrame {
 						
 						JoinPage join = new JoinPage(selectedIDs);
 						join.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-						join.setSize(900, 500);
+						join.setSize(1200, 500);
 						join.setVisible(true);
-						
-						System.out.println(selectedIDs);
-							System.out.println("oooooooooooo");
-							System.out.println("courseIDs size: " + selectedIDs.size());
-
-
 					} catch (SQLException e1) {
 						e1.printStackTrace();
 					}

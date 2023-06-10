@@ -23,23 +23,26 @@ public class JoinPage extends JFrame {
 		createLayout();
 		this.courseIDs = new ArrayList<>(selectedIDs);
 		showTable();
-		
 		this.setTitle("JoinPage");
+		result = null;
+		this.checkBoxes = new JCheckBox[selectedIDs.size()];
+		System.out.println(selectedIDs.size());
 
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				for (int i = 0; i < checkBoxes.length; i++) {
 					checkBoxes[i] = new JCheckBox();
 					final int index = i;
-					checkBoxes[index].addItemListener(new ItemListener() {//選出被選到的course
-						public void itemStateChanged(ItemEvent e) {//itemStateChanged checkBoxes[i]狀態改變
+					checkBoxes[index].addItemListener(new ItemListener() {// 選出被選到的course
+						public void itemStateChanged(ItemEvent e) {// itemStateChanged checkBoxes[i]狀態改變
+							System.out.println("this");
 							if (e.getStateChange() == ItemEvent.SELECTED) {
+								System.out.print("mails");
 								try {
 									if (result.absolute(index + 4)) {
 										int mail = result.getInt("Leader_ID");
-										mails.add(mail);// 存放組長學號
-										// 寄送信
-										// 回到Main page
+										mails.add(mail);
+										System.out.print(mails);
 										StringBuilder sb = new StringBuilder();
 										for (Integer oneMail : mails) {
 											if (oneMail != null) {
@@ -149,7 +152,7 @@ public class JoinPage extends JFrame {
 			TableColumn checkBoxColumn = columnModel.getColumn(0);// 取得欄位0 就是整欄的checkBox
 			checkBoxColumn.setCellEditor(new DefaultCellEditor(new JCheckBox()));// 設置欄位編輯器是預設的，並初始化
 			checkBoxColumn.setCellRenderer(joinTable.getDefaultRenderer(Boolean.class));
-			
+
 			rs.close();
 			stat.close();
 
