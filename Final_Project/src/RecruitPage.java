@@ -162,3 +162,8 @@ public class RecruitPage extends JFrame {
 		getContentPane().add(allPanel);
 	}
 }
+
+
+/*		JavaMail mail = new JavaMail();
+		mail.SendMail();
+ */
