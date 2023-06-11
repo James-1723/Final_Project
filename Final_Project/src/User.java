@@ -18,9 +18,16 @@ public class User {
 	public Statement stat;
 	public ResultSet result;
 
+	//*User's object info */
 	public String userAccount;
 	public String userName;
 	public String userDep;
+
+	//*User's applied group */
+	public String courseName;
+	public int courseID;
+	public int groupID;
+	public String message;
 
 	public User() {
 		accounts = new ArrayList<String>();
