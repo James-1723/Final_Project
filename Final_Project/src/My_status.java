@@ -19,7 +19,6 @@ public class My_status extends JFrame {
 	private JComboBox comboBox = new JComboBox();
 
 	public My_status(User users) {
-		this.user = users;
 		setTitle("My Status");
 		createLayout();
 		createJoinTable();
@@ -96,17 +95,24 @@ public class My_status extends JFrame {
 
 	public void createJoinTable() {
 		try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
-			String userID = user.getuserID();
-			String query = String.format("SELECT * FROM `Total_Register_List` WHERE `Name` = '%s'", userID);
+
+			String name = user.userName;
+			System.out.print("ede" + name);
+			String query = String.format("SELECT * FROM `GroupList` WHERE `Current_members' names` LIKE '%%%s%%'",
+					name);
+
 			PreparedStatement stat = conn.prepareStatement(query);
-			ResultSet rs = stat.executeQuery(query);
+			// String.format("'%%'+'%s'+'%%'", name);
+			// stat.setString(1, "%" + '%james,33%' + "%");
+			ResultSet rs = stat.executeQuery();
+
 			DefaultTableModel model = new DefaultTableModel() {
 				// 指定每一欄的類型
 				public Class<?> getColumnClass(int columnIndex) {
 					return super.getColumnClass(columnIndex);
 				}
 			};
-			ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
+			ResultSetMetaData rsmd = rs.getMetaData();
 			int cols = rsmd.getColumnCount();
 
 			// 加入欄位名稱
@@ -116,21 +122,27 @@ public class My_status extends JFrame {
 
 			// 加入資料 要先創建每一行
 			while (rs.next()) {
-				Object[] rows = new Object[cols]; // 創建原database資料的欄位數
+				Object[] rows = new Object[cols];
 				for (int i = 1; i <= cols; i++) {
-					rows[i - 1] = rs.getObject(i); // 資料庫是從1開始 java從0
+					rows[i - 1] = rs.getObject(i);
 				}
 				model.addRow(rows);
+
+				// 檢查資料
+				for (int i = 0; i < model.getRowCount(); i++) {
+					for (int j = 0; j < model.getColumnCount(); j++) {
+						Object value = model.getValueAt(i, j);
+						System.out.println(value);
+					}
+				}
 			}
 			join_table.setModel(model);
 
 			stat.close();
 			conn.close();
-
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-
 	}
 
 	public void createRecruitTable() {
@@ -142,15 +154,10 @@ public class My_status extends JFrame {
 			DefaultTableModel model = new DefaultTableModel() {
 				// 指定每一欄的類型
 				public Class<?> getColumnClass(int columnIndex) {
-
 					if (columnIndex == 0) {
-
 						return Boolean.class; // 第一欄設為布林類型
-
 					} else {
-
 						return super.getColumnClass(columnIndex);
-
 					}
 				}
 
@@ -172,9 +179,10 @@ public class My_status extends JFrame {
 
 			// 加入資料 要先創建每一行
 			while (rs.next()) {
-				Object[] rows = new Object[cols]; // 創建原database資料的欄位數
+				Object[] rows = new Object[cols + 1]; // 創建原database資料的欄位數加一
+				rows[0] = false; // 預設未選中
 				for (int i = 1; i <= cols; i++) {
-					rows[i - 1] = rs.getObject(i); // 資料庫是從1開始 java從0
+					rows[i] = rs.getObject(i);// 將每一行添加到row
 				}
 				model.addRow(rows);
 			}
@@ -188,10 +196,13 @@ public class My_status extends JFrame {
 			stat.close();
 			conn.close();
 
+			scrollPane_2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
 			// Add combo box to each row
-			for (int i = 0; i < recruit_table.getRowCount(); i++) {
-				recruit_table.getColumnModel().getColumn(i).setCellEditor(new DefaultCellEditor(comboBox));
-			}
+			// for (int i = 0; i < recruit_table.getRowCount(); i++) {
+			// recruit_table.getColumnModel().getColumn(i).setCellEditor(new
+			// DefaultCellEditor(comboBox));
+			// }
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
