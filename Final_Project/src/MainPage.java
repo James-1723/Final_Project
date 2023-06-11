@@ -89,6 +89,7 @@ public class MainPage extends JFrame {
 
 						stat.close();
 						conn.close();
+
 					} catch (Exception se) {
 
 						se.printStackTrace();
@@ -101,29 +102,47 @@ public class MainPage extends JFrame {
 			}
 		});
 		join.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
+
+				setAccount(user);
 				int columnCount = table_1.getRowCount();
 				selectedIDs = new ArrayList<Integer>();
+
 				for (int i = 0; i < columnCount; i++) {
+					
 					Boolean selected = (Boolean) table_1.getValueAt(i, 0); // 第i行第0列 就是checkBox
 					if (selected) {
+
+						//*Add */
+						String courseName = (String) table_1.getValueAt(i, 3);
+						user.courseName = courseName;
+						System.out.println("user courseName: " + user.courseName);
+
+
 						int courseID = (int) table_1.getValueAt(i, 1);// 第i行第1列 即course_id
 						selectedIDs.add(courseID);
+
 					}
 				}
 
 				if (selectedIDs.isEmpty()) {
+
 					JOptionPane.showMessageDialog(null, "Select some courses!", "Error", JOptionPane.ERROR_MESSAGE);
+				
 				} else {
 					
 					try {
 						
-						JoinPage join = new JoinPage(selectedIDs);
+						JoinPage join = new JoinPage(selectedIDs, user);
 						join.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 						join.setSize(1200, 500);
 						join.setVisible(true);
+
 					} catch (SQLException e1) {
+
 						e1.printStackTrace();
+
 					}
 
 				}
