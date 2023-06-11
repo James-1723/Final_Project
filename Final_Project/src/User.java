@@ -62,6 +62,7 @@ public class User {
 			query = "SELECT * FROM `Student_Info`";
 			success = stat.execute(query);
 
+
 			String gmail = account + "@g.nccu.edu.tw";
 
 			if (success) {
