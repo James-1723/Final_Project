@@ -14,6 +14,8 @@ public class My_status extends JFrame {
 	private JButton back, submit;
 	private MainPage main = new MainPage();
 	private JPanel bPanel;
+	private JComboBox comboBox = new JComboBox();
+			
 
 	public My_status() {
 		setTitle("My Status");
@@ -38,11 +40,18 @@ public class My_status extends JFrame {
 				if (response == JOptionPane.NO_OPTION) {
 					System.out.println("No button is clicked");
 				} else if (response == JOptionPane.YES_OPTION) {
-					/*
-					 * 增加添加組員功能
-					 * 
-					 * 
-					 */
+					try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
+						comboBox.getSelectedIndex();
+						String query = "INSERT INTO`GroupList` ";
+						PreparedStatement stat = conn.prepareStatement(query);
+						ResultSet rs = stat.executeQuery(query);
+						stat.setString
+					}catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+					//加入後從frame消失
+					//if滿了，從user介面消失
+					//寄信給被加入者、如果滿了沒被加入的人也要寄
 					JOptionPane.showMessageDialog(null, "You have successfully added the members!",
 							"Success", JOptionPane.INFORMATION_MESSAGE);
 
@@ -82,7 +91,8 @@ public class My_status extends JFrame {
 
 	public void createTable() {
 		try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
-			String query = "SELECT * FROM `GroupList` ";
+			String leader = user.getUserName();
+			String query = String.format("SELECT * FROM `GroupList` WHERE `Leader_Name` = '%s'", leader);
 			PreparedStatement stat = conn.prepareStatement(query);
 			ResultSet rs = stat.executeQuery(query);
 			DefaultTableModel model = new DefaultTableModel() {
@@ -112,7 +122,11 @@ public class My_status extends JFrame {
 
 			stat.close();
 			conn.close();
-
+			
+			// Add combo box to each row
+			for (int i = 0; i < recruit_table.getRowCount(); i++) {
+				recruit_table.getColumnModel().getColumn(i).setCellEditor(new DefaultCellEditor(comboBox));
+			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
