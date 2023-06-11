@@ -112,7 +112,7 @@ public class RecruitPage extends JFrame {
 		textField = new JTextField(20);
 		panel.add(textField);
 
-		JLabel lblNewLabel_1 = new JLabel("Group leader:");
+		JLabel lblNewLabel_1 = new JLabel("Group Leader:");
 		panel_1.add(lblNewLabel_1);
 		textField_1 = new JTextField(20);
 		textField_1.setText(user.userName);// *user name */
@@ -130,7 +130,7 @@ public class RecruitPage extends JFrame {
 		textField_3.setText(user.userAccount);// *user ac */
 		panel_3.add(textField_3);
 
-		JLabel lblNewLabel_4 = new JLabel("Curent Members:");
+		JLabel lblNewLabel_4 = new JLabel("Current Members' names:");
 		panel_4.add(lblNewLabel_4);
 		textField_4 = new JTextField(17);
 		panel_4.add(textField_4);

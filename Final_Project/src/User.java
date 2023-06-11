@@ -193,13 +193,19 @@ public class User {
 			e.printStackTrace();
 
 		}
-
+		
 
 		/*int id = accounts.indexOf(account);//arrayList可以用indexOf用關鍵字找index
 		if (passwords.get(id).equals(PW))
 			return;
 		
 		throw new PasswordError("PasswordError:Password is wrong");*/
+	}
+	public String getUserName(){
+			return userName;
+		}
+	public String getuserID(){
+		return userAccount;
 	}
 }
 
