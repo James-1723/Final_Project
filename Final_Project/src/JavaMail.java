@@ -10,13 +10,25 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
 
 public class JavaMail {
-// ---------------------------------------------------------基本資料
+	// ---------------------------------------------------------基本資料
 
 	private String userName = "111306017@g.nccu.edu.tw"; // 寄件者信箱
 	private String password = "bhyufwdehiinxslm"; // 寄件者密碼
 	private String customer = "james20031225@gmail.com"; // 收件者郵箱
 	private String subject = "鞋咖's程設專案"; // 標題
 	private String txt = "<h1>誒嘿我成功了</h1><h2>好爽</h2>哈哈哈哈哈"; // 內容
+
+	public JavaMail(String gmail, String header, String text) {
+
+		// gmail: 信箱
+		// header: 標題
+		// text: 內文
+
+		this.customer = gmail;
+		this.subject = header;
+		this.txt = text;
+
+	}
 
 	public void SendMail() {
 		// ---------------------------------------------------------連線設定
@@ -46,13 +58,13 @@ public class JavaMail {
 		// ---------------------------------------------------------驗證
 		// ---------------------------------------------------------Session默認屬性設定值
 		// 匿名類別
-//		Session session = Session.getDefaultInstance(prop, new Authenticator() {
-//
-//			@Override
-//			protected PasswordAuthentication getPasswordAuthentication() {
-//				return new PasswordAuthentication(userName, password);
-//			}
-//		});
+		// Session session = Session.getDefaultInstance(prop, new Authenticator() {
+		//
+		// @Override
+		// protected PasswordAuthentication getPasswordAuthentication() {
+		// return new PasswordAuthentication(userName, password);
+		// }
+		// });
 
 		// class
 		Auth auth = new Auth(userName, password);
@@ -69,31 +81,29 @@ public class JavaMail {
 			// class
 			InternetAddress sender = new InternetAddress(userName);
 			message.setSender(sender);
-			
+
 			// 收件者
 			message.setRecipient(RecipientType.TO, new InternetAddress(customer));
-			
+
 			// 標題
 			message.setSubject(subject);
-			
+
 			// 內容/格式
 			message.setContent(txt, "text/html;charset = UTF-8");
-			
-			
+
 			// ---------------------------------------------------------Transport傳送Message
 			Transport transport = session.getTransport();
-			
+
 			// transport將message送出
 			transport.send(message);
-			
+
 			// 關閉Transport
 			transport.close();
-			
+
 		} catch (MessagingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 
 	}
 
