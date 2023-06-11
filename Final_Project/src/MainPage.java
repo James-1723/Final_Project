@@ -180,6 +180,8 @@ public class MainPage extends JFrame {
 			}
 		});
 
+
+
 		recruit.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -193,10 +195,20 @@ public class MainPage extends JFrame {
 
 					if (selected) {
 
-						int courseID = (int) table_1.getValueAt(i, 1);// 第i行第1列 即course_id
-						selectedIDs.add(courseID);
+						//*Add */
+						String courseName = (String) table_1.getValueAt(i, 2);
+						user.courseName = courseName;
+						
+						int courseIDs = (int) table_1.getValueAt(i, 1);// 第i行第1列 即course_id
+						user.courseID = courseIDs;
+						
+						selectedIDs.add(courseIDs);
+						
+						System.out.println("user courseName: " + user.courseName + " / user courseID: " + user.courseID);
 
 					}
+
+					
 				}
 
 				if (selectedIDs.isEmpty()) {

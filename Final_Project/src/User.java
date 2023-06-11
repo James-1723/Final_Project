@@ -136,9 +136,12 @@ public class User {
 			while (r.next()) {
 
 				String pw = r.getString("Password");
+
 				if (pw.equals(password)) {
+
 					System.out.println("Air: " + pw + " / local: " + password);
 					checker = true;
+					
 				}
 
 			}

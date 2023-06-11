@@ -27,7 +27,7 @@ public class RecruitPage extends JFrame {
 				String q1 = textField_1.getText(); // *Leader_Name */
 				String q2 = textField_2.getText(); // *Department of the group leader */
 				String q3 = textField_3.getText(); // *Leader_ID */
-				String q4 = textField_4.getText(); // *Current_Size */
+				String q4 = textField_4.getText(); // *Current member */
 				int q5 = Integer.parseInt(textField_5.getText()); // *Expected_Size */
 				String q6 = textField_6.getText(); // *Message */
 
@@ -39,8 +39,8 @@ public class RecruitPage extends JFrame {
 					String selection = "SELECT * FROM GroupList";
 					stat.execute(selection);
 					selection = String.format(
-							"INSERT INTO `GroupList` (CourseID, GroupName, Current_member's name, Recruit_Size, Message) VALUES(%d, '%s', '%s', %d, '%s')",
-							q0, q1, q3, q2, q5, q4, q6);
+							"INSERT INTO `GroupList` (CourseID, GroupName, LeaderName, LeaderID, department, Current_member's names, Message) VALUES(%d, '%s', '%s', '%s', '%s', '%s')",
+							user.courseID, q0 , user.userName, user.userAccount, user.userDep, q4, q6);
 					stat.execute(selection);
 
 					MainPage main = new MainPage();

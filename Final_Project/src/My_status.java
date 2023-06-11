@@ -196,4 +196,35 @@ public class My_status extends JFrame {
 			e1.printStackTrace();
 		}
 	}
+
+	public void getInfo() {
+
+		try {
+			
+			String query = String.format("SELECT CourseID FROM Total_Register_List");
+			user.result = user.stat.executeQuery(query);
+			query = String.format("SELECT StudentName FROM Total_Register_List WHERE CourseID=%d", user.courseID);
+			ResultSet r = user.stat.executeQuery(query);
+			
+			while (r.next()) {
+				
+				int everyGroupID = Integer.parseInt(r.getString("GroupID"));
+
+				if (everyGroupID == user.groupID) {
+					
+					query = String.format("SELECT CourseID FROM GroupList");
+
+				}
+
+
+			}
+
+		} catch (Exception e) {
+
+			// TODO: handle exception
+
+		}
+
+
+	}
 }
