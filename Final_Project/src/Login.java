@@ -61,8 +61,8 @@ public class Login extends JFrame {
 
 				try {
 
-					user.stat = user.conn.createStatement();
-					user.checkAccountExist(ac, user.stat);
+					//user.stat = user.conn.createStatement();
+					user.checkAccountExist(ac);
 					user.checkPassword(ac, pw);
 					main = new MainPage();
 					main.setDefaultCloseOperation(EXIT_ON_CLOSE);

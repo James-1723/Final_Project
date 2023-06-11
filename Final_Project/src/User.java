@@ -72,7 +72,7 @@ public class User {
 		}
 	}
 
-	public void checkAccountExist(String account, Statement stats) throws AccountError, SQLException {
+	public void checkAccountExist(String account) throws AccountError, SQLException {
 
 		//indexA = 0;
 
