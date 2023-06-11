@@ -219,7 +219,7 @@ public class MainPage extends JFrame {
 				My_status my_status = new My_status(user);
 				my_status.setVisible(true);
 				my_status.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				my_status.setSize(800, 500);
+				my_status.setSize(900, 500);
 			}
 		});
 		showAll.addActionListener(new ActionListener() {
