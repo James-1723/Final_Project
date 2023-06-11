@@ -131,23 +131,36 @@ public class MainPage extends JFrame {
 		});
 
 		recruit.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
+
 				int columnCount = table_1.getRowCount();
 				selectedIDs = new ArrayList<>();
+
 				for (int i = 0; i < columnCount; i++) {
+
 					Boolean selected = (Boolean) table_1.getValueAt(i, 0); // 第i行第0列 就是checkBox
+
 					if (selected) {
+
 						int courseID = (int) table_1.getValueAt(i, 1);// 第i行第1列 即course_id
 						selectedIDs.add(courseID);
+
 					}
 				}
+
 				if (selectedIDs.isEmpty()) {
+
 					JOptionPane.showMessageDialog(null, "Select some courses!", "Error", JOptionPane.ERROR_MESSAGE);
+				
 				} else {
-					RecruitPage recruit = new RecruitPage(user); // *Send user acount in */
+
+					System.out.println("user's name: " + user.userName + " / user's ID: " + user.userAccount);
+					RecruitPage recruit = new RecruitPage(user); // *Send user account in */
 					recruit.setVisible(true);
 					recruit.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					recruit.setSize(600, 500);
+
 				}
 			}
 		});
