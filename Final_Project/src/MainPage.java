@@ -115,7 +115,7 @@ public class MainPage extends JFrame {
 					if (selected) {
 
 						//*Add */
-						String courseName = (String) table_1.getValueAt(i, 3);
+						String courseName = (String) table_1.getValueAt(i, 2);
 						user.courseName = courseName;
 						
 						int courseIDs = (int) table_1.getValueAt(i, 1);// 第i行第1列 即course_id
@@ -131,9 +131,14 @@ public class MainPage extends JFrame {
 
 							String query = String.format("SELECT GroupID FROM GroupList");
 							user.result = user.stat.executeQuery(query);
-							query = String.format("SELECT GroupID FROM GroupList WHERE CourseName='%s'", user.courseName);
+							query = String.format("SELECT GroupID FROM GroupList WHERE CourseID=%d", user.courseID);
 							ResultSet r = user.stat.executeQuery(query);
-							user.groupID = Integer.parseInt(r.getString("GroupID"));
+
+							while (r.next()) {
+								
+								user.groupID = Integer.parseInt(r.getString("GroupID"));
+
+							}
 
 							System.out.println("user's GroupID = " + user.groupID);
 							
