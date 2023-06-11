@@ -1,5 +1,7 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,7 +17,6 @@ public class My_status extends JFrame {
 	private MainPage main = new MainPage();
 	private JPanel bPanel;
 	private JComboBox comboBox = new JComboBox();
-			
 
 	public My_status() {
 		setTitle("My Status");
@@ -38,20 +39,23 @@ public class My_status extends JFrame {
 				int response = JOptionPane.showConfirmDialog(null,
 						"just to make sure you won't regrate to recruit them.", "Confirm",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-				if (response == JOptionPane.NO_OPTION) {
+				if (response == JOptionPane.NO_OPTION) {// 按否
 					System.out.println("No button is clicked");
-				} else if (response == JOptionPane.YES_OPTION) {
+				} else if (response == JOptionPane.YES_OPTION) {// 按確認
+
 					try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
+
 						comboBox.getSelectedIndex();
 						String query = "INSERT INTO`GroupList` ";
 						PreparedStatement stat = conn.prepareStatement(query);
 						ResultSet rs = stat.executeQuery(query);
-					}catch (SQLException e1) {
+
+					} catch (SQLException e1) {
 						e1.printStackTrace();
 					}
-					//加入後從frame消失
-					//if滿了，從user介面消失
-					//寄信給被加入者、如果滿了沒被加入的人也要寄
+					// 加入後從frame消失
+					// if滿了，從user介面消失
+					// 寄信給被加入者、如果滿了沒被加入的人也要寄
 					JOptionPane.showMessageDialog(null, "You have successfully added the members!",
 							"Success", JOptionPane.INFORMATION_MESSAGE);
 
@@ -121,24 +125,42 @@ public class My_status extends JFrame {
 
 			stat.close();
 			conn.close();
-			
+
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
 
 	}
-	public void createRecruitTable(){
+
+	public void createRecruitTable() {
 		try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
-			String leader = user.getUserName();
-			String query = String.format("SELECT * FROM `GroupList` WHERE `Leader_Name` = '%s'", leader);
+			int courseID = user.courseID;
+			String query = String.format("SELECT * FROM `GroupList` WHERE `CourseID` = %s", courseID);
 			PreparedStatement stat = conn.prepareStatement(query);
 			ResultSet rs = stat.executeQuery(query);
 			DefaultTableModel model = new DefaultTableModel() {
 				// 指定每一欄的類型
 				public Class<?> getColumnClass(int columnIndex) {
-					return super.getColumnClass(columnIndex);
+
+					if (columnIndex == 0) {
+
+						return Boolean.class; // 第一欄設為布林類型
+
+					} else {
+
+						return super.getColumnClass(columnIndex);
+
+					}
+				}
+
+				// 指定哪些欄位是可以編輯的
+				public boolean isCellEditable(int row, int column) {
+
+					return column == 0; // 只有第一欄是可編輯的
+
 				}
 			};
+			model.addColumn("Select"); // 新增布林欄位
 			ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
 			int cols = rsmd.getColumnCount();
 
@@ -156,10 +178,15 @@ public class My_status extends JFrame {
 				model.addRow(rows);
 			}
 			recruit_table.setModel(model);
+			// 在每一行前面加 JCheckBox
+			TableColumnModel columnModel = recruit_table.getColumnModel();// 取得負責管理表格的欄位設置
+			TableColumn checkBoxColumn = columnModel.getColumn(0);// 取得欄位0 就是整欄的checkBox
+			checkBoxColumn.setCellEditor(new DefaultCellEditor(new JCheckBox()));// 設置欄位編輯器是預設的，並初始化
+			checkBoxColumn.setCellRenderer(recruit_table.getDefaultRenderer(Boolean.class));
 
 			stat.close();
 			conn.close();
-			
+
 			// Add combo box to each row
 			for (int i = 0; i < recruit_table.getRowCount(); i++) {
 				recruit_table.getColumnModel().getColumn(i).setCellEditor(new DefaultCellEditor(comboBox));
