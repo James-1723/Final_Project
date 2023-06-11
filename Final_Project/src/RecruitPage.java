@@ -39,7 +39,7 @@ public class RecruitPage extends JFrame {
 					String selection = "SELECT * FROM GroupList";
 					stat.execute(selection);
 					selection = String.format(
-							"INSERT INTO `GroupList` (GroupName, Leader_Name, Leader_ID, Department, Expected_Size, Current_Size, Message) VALUES('%s', '%s', '%s', '%s', '%s', %d,'%s')",
+							"INSERT INTO `GroupList` (CourseID, GroupName, Current_member's name, Recruit_Size, Message) VALUES(%d, '%s', '%s', %d, '%s')",
 							q0, q1, q3, q2, q5, q4, q6);
 					stat.execute(selection);
 
