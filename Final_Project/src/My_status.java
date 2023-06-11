@@ -18,7 +18,8 @@ public class My_status extends JFrame {
 	private JPanel bPanel;
 	private JComboBox comboBox = new JComboBox();
 
-	public My_status() {
+	public My_status(User users) {
+		this.user = users;
 		setTitle("My Status");
 		createLayout();
 		createJoinTable();

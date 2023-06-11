@@ -27,7 +27,9 @@ public class MainPage extends JFrame {
 
 		// 如果使用者有想特別找的再打search
 		searchButton.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
+
 				String search = searchField.getText();
 
 				try {
@@ -141,6 +143,9 @@ public class MainPage extends JFrame {
 							}
 
 							System.out.println("user's GroupID = " + user.groupID);
+
+							//query = "INSERT INTO `Total_Register_List` (CourseId, GroupID, StudentName) VALUES" + String.format("(%d, %d, '%s')", user.courseID, user.groupID, user.userName);
+							//user.stat.execute(query);
 							
 						} catch (Exception ae) {
 
@@ -211,7 +216,7 @@ public class MainPage extends JFrame {
 		});
 		myStatus.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				My_status my_status = new My_status();
+				My_status my_status = new My_status(user);
 				my_status.setVisible(true);
 				my_status.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				my_status.setSize(800, 500);

@@ -33,7 +33,28 @@ public class JoinPage extends JFrame {
 
 			public void actionPerformed(ActionEvent e) {
 
-				for (int i = 0; i < checkBoxes.length; i++) {
+				try {
+					
+					String query = "INSERT INTO `Total_Register_List` (CourseId, GroupID, StudentName) VALUES" + String.format("(%d, %d, '%s')", user.courseID, user.groupID, user.userName);
+					user.stat.execute(query);
+
+					//*user */
+					main.setAccount(user);
+					//*user */
+					main.setDefaultCloseOperation(EXIT_ON_CLOSE);
+					main.setVisible(true);
+					main.setSize(600, 500);
+					JoinPage.this.dispose();
+
+				} catch (Exception x) {
+
+					x.printStackTrace();
+
+				}
+
+
+
+				/*for (int i = 0; i < checkBoxes.length; i++) {
 
 					checkBoxes[i] = new JCheckBox();
 					final int index = i;
@@ -66,6 +87,7 @@ public class JoinPage extends JFrame {
 										}
 									}	
 
+									
 								} catch (SQLException e1) {
 
 									e1.printStackTrace();
@@ -74,7 +96,7 @@ public class JoinPage extends JFrame {
 							}
 						}
 					});
-				}
+				}*/
 			}
 		});
 		back.addActionListener(new ActionListener() {
