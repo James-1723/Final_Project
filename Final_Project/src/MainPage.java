@@ -117,11 +117,32 @@ public class MainPage extends JFrame {
 						//*Add */
 						String courseName = (String) table_1.getValueAt(i, 3);
 						user.courseName = courseName;
-						System.out.println("user courseName: " + user.courseName);
+						
+						int courseIDs = (int) table_1.getValueAt(i, 1);// 第i行第1列 即course_id
+						user.courseID = courseIDs;
+						
+						selectedIDs.add(courseIDs);
+						
+						System.out.println("user courseName: " + user.courseName + " / user courseID: " + user.courseID);
 
+						//*Group ID */
 
-						int courseID = (int) table_1.getValueAt(i, 1);// 第i行第1列 即course_id
-						selectedIDs.add(courseID);
+						try {
+
+							String query = String.format("SELECT GroupID FROM GroupList");
+							user.result = user.stat.executeQuery(query);
+							query = String.format("SELECT GroupID FROM GroupList WHERE CourseName='%s'", user.courseName);
+							ResultSet r = user.stat.executeQuery(query);
+							user.groupID = Integer.parseInt(r.getString("GroupID"));
+
+							System.out.println("user's GroupID = " + user.groupID);
+							
+						} catch (Exception ae) {
+
+							ae.printStackTrace();
+
+						}
+
 
 					}
 				}

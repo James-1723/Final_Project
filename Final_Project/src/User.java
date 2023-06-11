@@ -87,7 +87,7 @@ public class User {
 		try {
 			
 			String query = "SELECT ID FROM Student_Info";
-			result = this.stat.executeQuery(query);
+			result = stat.executeQuery(query);
 			boolean checker = false;
 
 			while (result.next()) {
