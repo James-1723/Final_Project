@@ -119,44 +119,17 @@ public class My_status extends JFrame {
 									StringBuilder strbuild = new StringBuilder();
 									strbuild.append(studentName);
 									strbuild.append("," + stuName);
-									query = "Update GroupList SET Member = " + strbuild + " WHERE GroupID = " + groupID;
+									query = "UPDATE GroupList SET Member = '" + strbuild.toString() + "' WHERE GroupID = '" + groupID + "'";
 									user.stat.execute(query);
 									System.out.print("現在全部" + strbuild);
 									System.out.println(String.format("有無成功從groupList加入%s", stuName));
 
 								}
 
-								// 找GroupID
-								// query = String.format("SELECT GroupID FROM Total_Register_List");
-								// result = user.stat.executeQuery(query);
-								//
-								// user.result = user.stat.executeQuery(query);
-								// query = String.format("SELECT GroupID FROM Total_Register_List WHERE
-								// CourseID=%d",courseIDs);
-								// result = user.stat.executeQuery(query);
-								/*
-								 * while (r.next()) {
-								 * 
-								 * //指定GroupID
-								 * stuName = r.getString("StudentName");
-								 * stuID = Integer.parseInt(r.getString("StuID"));
-								 * //user.groupID = Integer.parseInt(r.getString("GroupID"));
-								 * 
-								 * }
-								 */
-
 							}
 						}
 
 						comboBox.getSelectedIndex();
-						/*
-						 * String query = "INSERT INTO`GroupList` ";
-						 * PreparedStatement stat = conn.prepareStatement(query);
-						 * ResultSet rs = stat.executeQuery(query);
-						 */
-
-						// *Gmail */
-						// query = "SELECT FROM `Total_Resister_List` WHERE CourseID";
 
 					} catch (SQLException e1) {
 
