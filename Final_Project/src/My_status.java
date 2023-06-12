@@ -77,6 +77,8 @@ public class My_status extends JFrame {
 
 		scrollPane_1 = new JScrollPane(join_table);
 		scrollPane_2 = new JScrollPane(recruit_table);
+		scrollPane_2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane_2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 		BoxLayout boxLayout = new BoxLayout(getContentPane(), BoxLayout.Y_AXIS);
 		getContentPane().setLayout(boxLayout);
@@ -96,6 +98,7 @@ public class My_status extends JFrame {
 	public void createJoinTable() {
 		try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
 
+			// 因為userName是空值，所以現在show不出東西
 			String name = user.userName;
 			System.out.print("ede" + name);
 			String query = String.format("SELECT * FROM `GroupList` WHERE `Current_members' names` LIKE '%%%s%%'",
@@ -149,6 +152,9 @@ public class My_status extends JFrame {
 		try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
 			int courseID = user.courseID;
 			String query = String.format("SELECT * FROM `GroupList` WHERE `CourseID` = %s", courseID);
+			// String leaderName = user.userName;
+			// String query = String.format("SELECT * FROM `GroupList` WHERE `CourseID` =
+			// %s", leaderName);
 			PreparedStatement stat = conn.prepareStatement(query);
 			ResultSet rs = stat.executeQuery(query);
 			DefaultTableModel model = new DefaultTableModel() {
@@ -190,13 +196,18 @@ public class My_status extends JFrame {
 			// 在每一行前面加 JCheckBox
 			TableColumnModel columnModel = recruit_table.getColumnModel();// 取得負責管理表格的欄位設置
 			TableColumn checkBoxColumn = columnModel.getColumn(0);// 取得欄位0 就是整欄的checkBox
+			recruit_table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+
+			TableColumn currentColume = columnModel.getColumn(7);
+			currentColume.setPreferredWidth(200);
+			TableColumn messageColume = columnModel.getColumn(8);
+			messageColume.setPreferredWidth(300);
+
 			checkBoxColumn.setCellEditor(new DefaultCellEditor(new JCheckBox()));// 設置欄位編輯器是預設的，並初始化
 			checkBoxColumn.setCellRenderer(recruit_table.getDefaultRenderer(Boolean.class));
 
 			stat.close();
 			conn.close();
-
-			scrollPane_2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
 			// Add combo box to each row
 			// for (int i = 0; i < recruit_table.getRowCount(); i++) {
@@ -206,36 +217,5 @@ public class My_status extends JFrame {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-	}
-
-	public void getInfo() {
-
-		try {
-			
-			String query = String.format("SELECT CourseID FROM Total_Register_List");
-			user.result = user.stat.executeQuery(query);
-			query = String.format("SELECT StudentName FROM Total_Register_List WHERE CourseID=%d", user.courseID);
-			ResultSet r = user.stat.executeQuery(query);
-			
-			while (r.next()) {
-				
-				int everyGroupID = Integer.parseInt(r.getString("GroupID"));
-
-				if (everyGroupID == user.groupID) {
-					
-					query = String.format("SELECT CourseID FROM GroupList");
-
-				}
-
-
-			}
-
-		} catch (Exception e) {
-
-			// TODO: handle exception
-
-		}
-
-
 	}
 }
