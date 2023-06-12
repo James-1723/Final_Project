@@ -64,49 +64,60 @@ public class My_status extends JFrame {
 
 							if (selected) {
 
+								// 找Course Name
+								// courseName = (String) recruit_table.getValueAt(i, 2);
+								// user.courseName = courseName;
 
-
-								//找Course Name
-								//courseName = (String) recruit_table.getValueAt(i, 2);
-								//user.courseName = courseName;
-								
-								int cID = (int)recruit_table.getValueAt(i, 1);
+								int cID = (int) recruit_table.getValueAt(i, 1);
 								courseIDs = cID;
-								stuName = (String)recruit_table.getValueAt(i, 4);
-								String a = (String)recruit_table.getValueAt(i, 6);
-								stuID = Integer.parseInt(a) ;
+								stuName = (String) recruit_table.getValueAt(i, 4);
+								String a = (String) recruit_table.getValueAt(i, 6);
+								stuID = Integer.parseInt(a);
 								int groupID = (int) recruit_table.getValueAt(i, 2);// 第i行第1列 即groupID
 
-								leaderName = (String)recruit_table.getValueAt(i, 3);
+								leaderName = (String) recruit_table.getValueAt(i, 3);
 								String text = "學號 " + stuID + " 已被課程 " + courseIDs + " 課程組長 " + leaderName + "加入";
 
 								System.out.println("stuName: " + stuName + " / stuID: " + stuID);
 
-
-								//*Sending email */
+								// *Sending email */
 								String gmail = stuID + "@g.nccu.edu.tw";
-								JavaMail mail = new JavaMail(gmail, "Member-Finding System", text);
-								mail.SendMail();
+								// JavaMail mail = new JavaMail(gmail, "Member-Finding System", text);
+								// mail.SendMail();
 
-								//user.courseID = courseIDs;
-								
-								//找到recruiterName之後 把他從registerList 刪掉
-								String query = String.format("DELETE FROM Total_Register_List WHERE `StudentName` = '%s'",stuName);
+								// user.courseID = courseIDs;
 
-								ResultSet r = user.stat.executeQuery(query);
+								// 找到stuName之後 把他從registerList 刪掉 已成功
+								// String query = String.format("DELETE FROM Total_Register_List WHERE
+								// `StudentName` = '%s'",stuName);
+								// user.stat.execute(query);
+								// System.out.println(String.format("成功從registers 刪掉%s",stuName));
 
 								// 並且加進GroupList
-								query = String.format("DELETE FROM Total_Register_List WHERE `StudentName` = '%s'",
-										stuName);
+								String query = String.format("SELECT `Member` FROM `GroupList` WHERE `GroupID` = '%s'",
+										groupID);
+								ResultSet result = user.stat.executeQuery(query);
+
+								if (result.next()) {
+									String studentName = result.getString("Member");
+									StringBuilder strbuild = new StringBuilder();
+									strbuild.append(studentName);
+									strbuild.append("," + stuName);
+									query = "Update GroupList SET Member = " + strbuild + " WHERE GroupID = " + groupID;
+									user.stat.execute(query);
+									System.out.print("現在全部" + strbuild);
+									System.out.println(String.format("有無成功從groupList加入%s", stuName));
+
+								}
 
 								// 找GroupID
-								query = String.format("SELECT GroupID FROM Total_Register_List");
-								r = user.stat.executeQuery(query);
-
-								user.result = user.stat.executeQuery(query);
-								query = String.format("SELECT GroupID FROM Total_Register_List WHERE CourseID=%d",
-										courseIDs);
-								r = user.stat.executeQuery(query);
+								// query = String.format("SELECT GroupID FROM Total_Register_List");
+								// result = user.stat.executeQuery(query);
+								//
+								// user.result = user.stat.executeQuery(query);
+								// query = String.format("SELECT GroupID FROM Total_Register_List WHERE
+								// CourseID=%d",courseIDs);
+								// result = user.stat.executeQuery(query);
 								/*
 								 * while (r.next()) {
 								 * 
@@ -127,7 +138,6 @@ public class My_status extends JFrame {
 						 * PreparedStatement stat = conn.prepareStatement(query);
 						 * ResultSet rs = stat.executeQuery(query);
 						 */
-
 
 						// *Gmail */
 						// query = "SELECT FROM `Total_Resister_List` WHERE CourseID";
@@ -231,8 +241,9 @@ public class My_status extends JFrame {
 	public void createRecruitTable() {
 		try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
 
-			String query = String.format("SELECT * FROM Total_Register_List WHERE `LeaderName` = '%s'", user.userName); 
-//			String query = String.format("SELECT * FROM `GroupList` WHERE `CourseID` = %s", leaderName);
+			String query = String.format("SELECT * FROM Total_Register_List WHERE `LeaderName` = '%s'", user.userName);
+			// String query = String.format("SELECT * FROM `GroupList` WHERE `CourseID` =
+			// %s", leaderName);
 
 			PreparedStatement stat = conn.prepareStatement(query);
 			ResultSet rs = stat.executeQuery(query);
