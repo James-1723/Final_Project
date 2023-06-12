@@ -36,28 +36,79 @@ public class My_status extends JFrame {
 		});
 
 		submit.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
+
 				JDialog.setDefaultLookAndFeelDecorated(true);
 				int response = JOptionPane.showConfirmDialog(null,
 						"just to make sure you won't regrate to recruit them.", "Confirm",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
 				if (response == JOptionPane.NO_OPTION) {//按否
+
 					System.out.println("No button is clicked");
+
 				} else if (response == JOptionPane.YES_OPTION) {//按確認
 					
 					try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
-						
+
+
+						String courseName;
+						int courseIDs;
+						int groupID = 0;
+						String stuName = "";
+						int stuID = 0;
+
+						int columnCount = recruit_table.getRowCount();
+						for (int i = 0; i < columnCount; i++) {
+					
+							Boolean selected = (Boolean) recruit_table.getValueAt(i, 0); // 第i行第0列 就是checkBox
+
+							if (selected) {
+
+								//找Course Name
+								courseName = (String) recruit_table.getValueAt(i, 2);
+								//user.courseName = courseName;
+								
+								//找CourseID
+								courseIDs = (int) recruit_table.getValueAt(i, 1);// 第i行第1列 即course_id
+								//user.courseID = courseIDs;
+								
+								//找GroupID
+								String query = String.format("SELECT GroupID FROM Total_Register_List");
+								user.result = user.stat.executeQuery(query);
+								query = String.format("SELECT GroupID FROM Total_Register_List WHERE CourseID=%d", courseIDs);
+								ResultSet r = user.stat.executeQuery(query);
+								while (r.next()) {
+									
+									//指定GroupID
+									stuName = r.getString("StudentName");
+									stuID = Integer.parseInt(r.getString("StuID"));
+									//user.groupID = Integer.parseInt(r.getString("GroupID"));
+
+								}
+
+							}
+							System.out.println("stuName: " + stuName + " / stuID: " + stuID);
+						}
+
 						comboBox.getSelectedIndex();
-						String query = "INSERT INTO`GroupList` ";
+						/*String query = "INSERT INTO`GroupList` ";
 						PreparedStatement stat = conn.prepareStatement(query);
-						ResultSet rs = stat.executeQuery(query);
-						
-						//加入後從frame消失
-						//if滿了，從user介面消失
-						//寄信給被加入者、如果滿了沒被加入的人也要寄
-						
-					}catch (SQLException e1) {
+						ResultSet rs = stat.executeQuery(query);*/
+
+						// 加入後從frame消失
+						// if滿了，從user介面消失
+						// 寄信給被加入者、如果滿了沒被加入的人也要寄
+
+						//*Gmail */
+						//query = "SELECT FROM `Total_Resister_List` WHERE CourseID";
+
+
+					} catch (SQLException e1) {
+
 						e1.printStackTrace();
+
 					}
 					
 					JOptionPane.showMessageDialog(null, "You have successfully added the members!",
