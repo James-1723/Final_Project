@@ -254,11 +254,13 @@ public class MainPage extends JFrame {
 	}
 
 	public void createButton() {
+
 		searchButton = new JButton("Search");
 		join = new JButton("Join");
 		recruit = new JButton("Recruit");
 		myStatus = new JButton("my status");
 		showAll = new JButton("show all");
+
 	}
 
 	public void createTextField() {
@@ -269,7 +271,9 @@ public class MainPage extends JFrame {
 	}
 
 	public void showAll() {
+
 		try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
+
 			String query = "SELECT * FROM `Course_List` ";
 			PreparedStatement stat = conn.prepareStatement(query);
 			ResultSet rs = stat.executeQuery(query);
@@ -277,16 +281,24 @@ public class MainPage extends JFrame {
 
 				// 指定每一欄的類型
 				public Class<?> getColumnClass(int columnIndex) {
+
 					if (columnIndex == 0) {
+
 						return Boolean.class; // 第一欄設為布林類型
+
 					} else {
+
 						return super.getColumnClass(columnIndex);
+
 					}
+
 				}
 
 				// 指定哪些欄位是可以編輯的
 				public boolean isCellEditable(int row, int column) {
+
 					return column == 0; // 只有第一欄是可編輯的
+
 				}
 			};
 
@@ -297,15 +309,21 @@ public class MainPage extends JFrame {
 
 			// 加入欄位名稱
 			for (int i = 1; i <= cols; i++) {
+
 				model.addColumn(rsmd.getColumnName(i));
+
 			}
 
 			// 加入資料 要先創建每一行
 			while (rs.next()) {
+
 				Object[] rows = new Object[cols + 1]; // 創建原database資料的欄位數加一
 				rows[0] = false; // 預設未選中
+
 				for (int i = 1; i <= cols; i++) {
+
 					rows[i] = rs.getObject(i);// 將每一行添加到row
+
 				}
 				model.addRow(rows);
 			}
@@ -320,12 +338,16 @@ public class MainPage extends JFrame {
 
 			stat.close();
 			conn.close();
+
 		} catch (SQLException e1) {
+
 			e1.printStackTrace();
+
 		}
 	}
 
 	public void createPanel() {
+
 		JPanel upPanel = new JPanel();
 		upPanel.setBackground(new Color(214, 218, 212));
 		upPanel.add(searchLabel);
@@ -346,6 +368,7 @@ public class MainPage extends JFrame {
 		downPanel.add(recruit);
 		downPanel.add(myStatus);
 		getContentPane().add(downPanel, BorderLayout.SOUTH);
+		
 	}
 
 	public void setAccount(User localUser) {

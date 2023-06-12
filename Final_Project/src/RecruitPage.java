@@ -2,25 +2,25 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
-//import java.util.ArrayList;
 import javax.swing.*;
 
 public class RecruitPage extends JFrame {
-	// private ArrayList<Integer>selectedIDs;
+
 	private JTextField textField, textField_1, textField_2, textField_3, textField_4, textField_5, textField_6;
 	private JButton postB,back;
 	private User user;
 	private MainPage main = new MainPage();
 
 	public RecruitPage(User users) {
+
 		getContentPane().setBackground(new Color(214, 218, 212));
-		// this.selectedIDs = selectedIDs;
 		this.user = users;
 		getContentPane().setLayout(new FlowLayout());
 		this.setTitle("Recruit Page");
 		createLayout();
 
 		postB.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
 
 				String q0 = textField.getText(); // *GroupName */
@@ -35,7 +35,6 @@ public class RecruitPage extends JFrame {
 
 					System.out.println("Post, ID is " + user.userAccount);
 					Statement stat = user.conn.createStatement();
-					// ResultSet result = stat.getResultSet();
 					String selection = "SELECT * FROM GroupList";
 					stat.execute(selection);
 					selection = "INSERT INTO `GroupList` (CourseID, GroupName, LeaderName, LeaderID, department, Member, Message, Expected) VALUES" + String.format("(%d, '%s', '%s', '%s', '%s', '%s', '%s', %d)", user.courseID, q0 , user.userName, user.userAccount, user.userDep, q4, q6, q5);
@@ -52,8 +51,7 @@ public class RecruitPage extends JFrame {
 					m.printStackTrace();
 
 				}
-				// query();
-				// String query = query();
+
 			}
 		});
 
@@ -75,6 +73,7 @@ public class RecruitPage extends JFrame {
 	
 	
 	public void createLayout() {
+
 		postB = new JButton("post");
 		getContentPane().add(postB);
 		back = new JButton("back");
@@ -152,7 +151,6 @@ public class RecruitPage extends JFrame {
 		panel_7.add(postB);
 		panel_7.add(back);
 
-
 		JPanel allPanel = new JPanel();
 		allPanel.setLayout(new GridLayout(8, 1));
 		allPanel.add(panel);
@@ -164,10 +162,6 @@ public class RecruitPage extends JFrame {
 		allPanel.add(panel_6);
 		allPanel.add(panel_7);
 		getContentPane().add(allPanel);
+
 	}
 }
-
-
-/*		JavaMail mail = new JavaMail();
-		mail.SendMail();
- */

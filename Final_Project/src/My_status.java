@@ -9,6 +9,7 @@ import java.sql.*;
 import java.awt.Color;
 
 public class My_status extends JFrame {
+
 	private User user = new User();
 	private JTable join_table, recruit_table;
 	private JLabel join_status, recruit_status;
@@ -16,9 +17,9 @@ public class My_status extends JFrame {
 	private JButton back, submit;
 	private MainPage main = new MainPage();
 	private JPanel bPanel;
-	private JComboBox comboBox = new JComboBox();
 
 	public My_status(User users) {
+
 		this.user = users;
 		setTitle("My Status");
 		createLayout();
@@ -26,12 +27,15 @@ public class My_status extends JFrame {
 		createRecruitTable();
 
 		back.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
+
 				main.setDefaultCloseOperation(EXIT_ON_CLOSE);
 				main.setVisible(true);
 				main.setSize(600, 500);
 				main.setAccount(user);
 				My_status.this.dispose();
+				
 			}
 		});
 
@@ -54,7 +58,6 @@ public class My_status extends JFrame {
 
 						String leaderName = "";
 						int courseIDs = 0;
-						// int groupID = 0;
 						String stuName = "";
 						int stuID = 0;
 
@@ -64,10 +67,6 @@ public class My_status extends JFrame {
 							Boolean selected = (Boolean) recruit_table.getValueAt(i, 0); // 第i行第0列 就是checkBox
 
 							if (selected) {
-
-								// 找Course Name
-								// courseName = (String) recruit_table.getValueAt(i, 2);
-								// user.courseName = courseName;
 
 								int cID = (int) recruit_table.getValueAt(i, 1);
 								courseIDs = cID;
@@ -100,13 +99,9 @@ public class My_status extends JFrame {
 								JavaMail mail = new JavaMail(gmail, "Member-Finding System", text);
 								mail.SendMail();
 
-								// user.courseID = courseIDs;
-
-								// 找到stuName之後 把他從registerList 刪掉 已成功
-						
-								 query = String.format("DELETE FROM Total_Register_List WHERE `StuID` = '%s'" ,stuID);
-								 user.stat.execute(query);
-								 System.out.println(String.format("成功從registers 刪掉%s",stuName));
+								query = String.format("DELETE FROM Total_Register_List WHERE `StuID` = '%s'" ,stuID);
+								user.stat.execute(query);
+								System.out.println(String.format("成功從registers 刪掉%s",stuName));
 
 								// 並且加進GroupList
 								query = String.format("SELECT `Member` FROM `GroupList` WHERE `GroupID` = '%s'",
@@ -114,6 +109,7 @@ public class My_status extends JFrame {
 								ResultSet result = user.stat.executeQuery(query);
 
 								if (result.next()) {
+
 									String studentName = result.getString("Member");
 									StringBuilder strbuild = new StringBuilder();
 									strbuild.append(studentName);
@@ -132,12 +128,9 @@ public class My_status extends JFrame {
 									checkGroup(groupID);
 
 								}
-								
-
 							}
 						}
 
-						comboBox.getSelectedIndex();
 
 					} catch (SQLException e1) {
 
@@ -149,13 +142,16 @@ public class My_status extends JFrame {
 							"Success", JOptionPane.INFORMATION_MESSAGE);
 
 				} else if (response == JOptionPane.CLOSED_OPTION) {
+
 					System.out.println("JOptionPane closed");
+
 				}
 			}
 		});
 	}
 
 	public void createLayout() {
+
 		back = new JButton("back");
 		submit = new JButton("submit");
 
@@ -182,46 +178,58 @@ public class My_status extends JFrame {
 		getContentPane().add(recruit_status);
 		getContentPane().add(scrollPane_2);
 		getContentPane().add(bPanel);
+
 	}
 
 	public void createJoinTable() {
+
 		try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
 
 			String stuID = user.userAccount;
 			String query = String.format("SELECT * FROM `Total_Register_List` WHERE `StuID`= '%s'", stuID);
 
 			PreparedStatement stat = conn.prepareStatement(query);
-			// String.format("'%%'+'%s'+'%%'", name);
-			// stat.setString(1, "%" + '%james,33%' + "%");
 			ResultSet rs = stat.executeQuery();
 
 			DefaultTableModel model = new DefaultTableModel() {
 				// 指定每一欄的類型
 				public Class<?> getColumnClass(int columnIndex) {
+
 					return super.getColumnClass(columnIndex);
+
 				}
 			};
+
 			ResultSetMetaData rsmd = rs.getMetaData();
 			int cols = rsmd.getColumnCount();
 
 			// 加入欄位名稱
 			for (int i = 1; i <= cols; i++) {
+
 				model.addColumn(rsmd.getColumnName(i));
+
 			}
 
 			// 加入資料 要先創建每一行
 			while (rs.next()) {
+
 				Object[] rows = new Object[cols];
+
 				for (int i = 1; i <= cols; i++) {
+
 					rows[i - 1] = rs.getObject(i);
+
 				}
 				model.addRow(rows);
 
 				// 檢查資料
 				for (int i = 0; i < model.getRowCount(); i++) {
+
 					for (int j = 0; j < model.getColumnCount(); j++) {
+
 						Object value = model.getValueAt(i, j);
 						System.out.println(value);
+
 					}
 				}
 			}
@@ -229,27 +237,34 @@ public class My_status extends JFrame {
 
 			stat.close();
 			conn.close();
+
 		} catch (SQLException e1) {
+
 			e1.printStackTrace();
+
 		}
 	}
 
 	public void createRecruitTable() {
+
 		try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
 
 			String query = String.format("SELECT * FROM Total_Register_List WHERE `LeaderName` = '%s'", user.userName);
-			// String query = String.format("SELECT * FROM `GroupList` WHERE `CourseID` =
-			// %s", leaderName);
 
 			PreparedStatement stat = conn.prepareStatement(query);
 			ResultSet rs = stat.executeQuery(query);
 			DefaultTableModel model = new DefaultTableModel() {
 				// 指定每一欄的類型
 				public Class<?> getColumnClass(int columnIndex) {
+
 					if (columnIndex == 0) {
+
 						return Boolean.class; // 第一欄設為布林類型
+						
 					} else {
+
 						return super.getColumnClass(columnIndex);
+
 					}
 				}
 
@@ -266,28 +281,30 @@ public class My_status extends JFrame {
 
 			// 加入欄位名稱
 			for (int i = 1; i <= cols; i++) {
+
 				model.addColumn(rsmd.getColumnName(i));
+
 			}
 
 			// 加入資料 要先創建每一行
 			while (rs.next()) {
+
 				Object[] rows = new Object[cols + 1]; // 創建原database資料的欄位數加一
 				rows[0] = false; // 預設未選中
+
 				for (int i = 1; i <= cols; i++) {
+
 					rows[i] = rs.getObject(i);// 將每一行添加到row
+
 				}
 				model.addRow(rows);
 			}
 			recruit_table.setModel(model);
+
 			// 在每一行前面加 JCheckBox
 			TableColumnModel columnModel = recruit_table.getColumnModel();// 取得負責管理表格的欄位設置
 			TableColumn checkBoxColumn = columnModel.getColumn(0);// 取得欄位0 就是整欄的checkBox
 			recruit_table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
-
-			// TableColumn currentColume = columnModel.getColumn(7);
-			// currentColume.setPreferredWidth(200);
-			// TableColumn messageColume = columnModel.getColumn(8);
-			// messageColume.setPreferredWidth(300);
 
 			checkBoxColumn.setCellEditor(new DefaultCellEditor(new JCheckBox()));// 設置欄位編輯器是預設的，並初始化
 			checkBoxColumn.setCellRenderer(recruit_table.getDefaultRenderer(Boolean.class));
@@ -295,19 +312,15 @@ public class My_status extends JFrame {
 			stat.close();
 			conn.close();
 
-			// Add combo box to each row
-			// for (int i = 0; i < recruit_table.getRowCount(); i++) {
-			// recruit_table.getColumnModel().getColumn(i).setCellEditor(new
-			// DefaultCellEditor(comboBox));
-			// }
 		} catch (SQLException e1) {
+
 			e1.printStackTrace();
+
 		}
 	}
 
 	public void checkGroup(int groupID) {
 
-		
 		try {
 			
 			String query = String.format("DELETE FROM GroupList WHERE Expected = 0");
