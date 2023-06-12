@@ -128,7 +128,6 @@ public class MainPage extends JFrame {
 						System.out.println("user courseName: " + user.courseName + " / user courseID: " + user.courseID);
 
 						//*Group ID */
-
 						try {
 
 							String query = String.format("SELECT GroupID FROM GroupList");
@@ -143,9 +142,6 @@ public class MainPage extends JFrame {
 							}
 
 							System.out.println("user's GroupID = " + user.groupID);
-
-							//query = "INSERT INTO `Total_Register_List` (CourseId, GroupID, StudentName) VALUES" + String.format("(%d, %d, '%s')", user.courseID, user.groupID, user.userName);
-							//user.stat.execute(query);
 							
 						} catch (Exception ae) {
 

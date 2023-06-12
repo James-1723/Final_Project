@@ -27,6 +27,7 @@ public class My_status extends JFrame {
 
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				main.setAccount(user);
 				main.setDefaultCloseOperation(EXIT_ON_CLOSE);
 				main.setVisible(true);
 				main.setSize(600, 500);
@@ -34,17 +35,63 @@ public class My_status extends JFrame {
 			}
 		});
 
-		submit.addActionListener(new ActionListener() {
+		submit.addActionListener(new ActionListener() { //Join Function
+
 			public void actionPerformed(ActionEvent e) {
+
 				JDialog.setDefaultLookAndFeelDecorated(true);
+
 				int response = JOptionPane.showConfirmDialog(null,
 						"just to make sure you won't regrate to recruit them.", "Confirm",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
 				if (response == JOptionPane.NO_OPTION) {// 按否
+
 					System.out.println("No button is clicked");
+
 				} else if (response == JOptionPane.YES_OPTION) {// 按確認
 
 					try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
+
+
+						String courseName;
+						int courseIDs;
+						int groupID = 0;
+						String stuName = "";
+						int stuID = 0;
+
+						int columnCount = recruit_table.getRowCount();
+						for (int i = 0; i < columnCount; i++) {
+					
+							Boolean selected = (Boolean) recruit_table.getValueAt(i, 0); // 第i行第0列 就是checkBox
+
+							if (selected) {
+
+								//找Course Name
+								courseName = (String) recruit_table.getValueAt(i, 2);
+								//user.courseName = courseName;
+								
+								//找CourseID
+								courseIDs = (int) recruit_table.getValueAt(i, 1);// 第i行第1列 即course_id
+								//user.courseID = courseIDs;
+								
+								//找GroupID
+								String query = String.format("SELECT GroupID FROM Total_Register_List");
+								user.result = user.stat.executeQuery(query);
+								query = String.format("SELECT GroupID FROM Total_Register_List WHERE CourseID=%d", courseIDs);
+								ResultSet r = user.stat.executeQuery(query);
+								while (r.next()) {
+									
+									//指定GroupID
+									stuName = r.getString("StudentName");
+									stuID = Integer.parseInt(r.getString("StuID"));
+									//user.groupID = Integer.parseInt(r.getString("GroupID"));
+
+								}
+
+							}
+							System.out.println("stuName: " + stuName + " / stuID: " + stuID);
+						}
 
 						comboBox.getSelectedIndex();
 						String query = "INSERT INTO`GroupList` ";
@@ -55,21 +102,30 @@ public class My_status extends JFrame {
 						// if滿了，從user介面消失
 						// 寄信給被加入者、如果滿了沒被加入的人也要寄
 
+						//*Gmail */
+						query = "SELECT FROM `Total_Resister_List` WHERE CourseID";
+
+
 					} catch (SQLException e1) {
+
 						e1.printStackTrace();
+
 					}
 
 					JOptionPane.showMessageDialog(null, "You have successfully added the members!",
 							"Success", JOptionPane.INFORMATION_MESSAGE);
 
 				} else if (response == JOptionPane.CLOSED_OPTION) {
+
 					System.out.println("JOptionPane closed");
+
 				}
 			}
 		});
 	}
 
 	public void createLayout() {
+
 		back = new JButton("back");
 		submit = new JButton("submit");
 
@@ -96,9 +152,11 @@ public class My_status extends JFrame {
 		getContentPane().add(recruit_status);
 		getContentPane().add(scrollPane_2);
 		getContentPane().add(bPanel);
+
 	}
 
 	public void createJoinTable() {
+
 		try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
 
 			// 因為userName是空值，所以現在show不出東西
@@ -114,10 +172,13 @@ public class My_status extends JFrame {
 			DefaultTableModel model = new DefaultTableModel() {
 				// 指定每一欄的類型
 				public Class<?> getColumnClass(int columnIndex) {
+
 					return super.getColumnClass(columnIndex);
+
 				}
 			};
 			ResultSetMetaData rsmd = rs.getMetaData();
+
 			int cols = rsmd.getColumnCount();
 
 			// 加入欄位名稱
@@ -127,17 +188,25 @@ public class My_status extends JFrame {
 
 			// 加入資料 要先創建每一行
 			while (rs.next()) {
+
 				Object[] rows = new Object[cols];
+
 				for (int i = 1; i <= cols; i++) {
+
 					rows[i - 1] = rs.getObject(i);
+
 				}
+
 				model.addRow(rows);
 
 				// 檢查資料
 				for (int i = 0; i < model.getRowCount(); i++) {
+
 					for (int j = 0; j < model.getColumnCount(); j++) {
+
 						Object value = model.getValueAt(i, j);
 						System.out.println(value);
+
 					}
 				}
 			}
@@ -145,13 +214,18 @@ public class My_status extends JFrame {
 
 			stat.close();
 			conn.close();
+
 		} catch (SQLException e1) {
+
 			e1.printStackTrace();
+
 		}
 	}
 
 	public void createRecruitTable() {
+
 		try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
+
 			int courseID = user.courseID;
 			String query = String.format(
 					"SELECT `CourseID`, `GroupID`, `GroupName`, `department`, `Member`, `Message`  FROM `GroupList` WHERE `CourseID` = %s",
@@ -164,10 +238,15 @@ public class My_status extends JFrame {
 			DefaultTableModel model = new DefaultTableModel() {
 				// 指定每一欄的類型
 				public Class<?> getColumnClass(int columnIndex) {
+
 					if (columnIndex == 0) {
+
 						return Boolean.class; // 第一欄設為布林類型
+
 					} else {
+
 						return super.getColumnClass(columnIndex);
+
 					}
 				}
 
@@ -178,21 +257,28 @@ public class My_status extends JFrame {
 
 				}
 			};
+
 			model.addColumn("Select"); // 新增布林欄位
 			ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
 			int cols = rsmd.getColumnCount();
 
 			// 加入欄位名稱
 			for (int i = 1; i <= cols; i++) {
+
 				model.addColumn(rsmd.getColumnName(i));
+
 			}
 
 			// 加入資料 要先創建每一行
 			while (rs.next()) {
+
 				Object[] rows = new Object[cols + 1]; // 創建原database資料的欄位數加一
 				rows[0] = false; // 預設未選中
+
 				for (int i = 1; i <= cols; i++) {
+
 					rows[i] = rs.getObject(i);// 將每一行添加到row
+
 				}
 				model.addRow(rows);
 			}
@@ -223,3 +309,5 @@ public class My_status extends JFrame {
 		}
 	}
 }
+
+

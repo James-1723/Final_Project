@@ -35,7 +35,11 @@ public class JoinPage extends JFrame {
 
 				try {
 					
+					//*Add student into total register list */
 					String query = "INSERT INTO `Total_Register_List` (CourseId, GroupID, StudentName, Department) VALUES" + String.format("(%d, %d, '%s', '%s')", user.courseID, user.groupID, user.userName, user.userDep);
+					//*Adding User ID */
+					//String query = "INSERT INTO `Total_Register_List` (CourseId, GroupID, StudentName, Department, StuID) VALUES" + String.format("(%d, %d, '%s', '%s', %d)", user.courseID, user.groupID, user.userName, user.userDep, user.userAccount);
+
 					user.stat.execute(query);
 
 					//*user */
