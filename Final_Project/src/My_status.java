@@ -51,7 +51,7 @@ public class My_status extends JFrame {
 
 					try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
 
-						String courseName = "";
+						String leaderName = "";
 						int courseIDs = 0;
 						// int groupID = 0;
 						String stuName = "";
@@ -64,22 +64,35 @@ public class My_status extends JFrame {
 
 							if (selected) {
 
-								// 找Course Name
-								// courseName = (String) recruit_table.getValueAt(i, 2);
-								// user.courseName = courseName;
 
-								// 找GroupID
-								stuName = (String) recruit_table.getValueAt(i, 4);
-								String a = (String) recruit_table.getValueAt(i, 6);
-								stuID = Integer.parseInt(a);
+
+								//找Course Name
+								//courseName = (String) recruit_table.getValueAt(i, 2);
+								//user.courseName = courseName;
+								
+								int cID = (int)recruit_table.getValueAt(i, 1);
+								courseIDs = cID;
+								stuName = (String)recruit_table.getValueAt(i, 4);
+								String a = (String)recruit_table.getValueAt(i, 6);
+								stuID = Integer.parseInt(a) ;
 								int groupID = (int) recruit_table.getValueAt(i, 2);// 第i行第1列 即groupID
+
+								leaderName = (String)recruit_table.getValueAt(i, 3);
+								String text = "學號 " + stuID + " 已被課程 " + courseIDs + " 課程組長 " + leaderName + "加入";
+
 								System.out.println("stuName: " + stuName + " / stuID: " + stuID);
 
-								// user.courseID = courseIDs;
 
-								// 找到recruiterName之後 把他從registerList 刪掉
-								String query = String
-										.format("DELETE FROM Total_Register_List WHERE `StudentName` = '%s'", stuName);
+								//*Sending email */
+								String gmail = stuID + "@g.nccu.edu.tw";
+								JavaMail mail = new JavaMail(gmail, "Member-Finding System", text);
+								mail.SendMail();
+
+								//user.courseID = courseIDs;
+								
+								//找到recruiterName之後 把他從registerList 刪掉
+								String query = String.format("DELETE FROM Total_Register_List WHERE `StudentName` = '%s'",stuName);
+
 								ResultSet r = user.stat.executeQuery(query);
 
 								// 並且加進GroupList
@@ -115,9 +128,6 @@ public class My_status extends JFrame {
 						 * ResultSet rs = stat.executeQuery(query);
 						 */
 
-						// 加入後從frame消失
-						// if滿了，從user介面消失
-						// 寄信給被加入者、如果滿了沒被加入的人也要寄
 
 						// *Gmail */
 						// query = "SELECT FROM `Total_Resister_List` WHERE CourseID";
@@ -220,11 +230,10 @@ public class My_status extends JFrame {
 
 	public void createRecruitTable() {
 		try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
-			String leaderName = user.leaderName;
-			System.out.println("create Recruit table" + leaderName);
-			String query = String.format("SELECT * FROM Total_Register_List WHERE `LeaderName` = '%s'", leaderName);
-			// String query = String.format("SELECT * FROM `GroupList` WHERE `CourseID` =
-			// %s", leaderName);
+
+			String query = String.format("SELECT * FROM Total_Register_List WHERE `LeaderName` = '%s'", user.userName); 
+//			String query = String.format("SELECT * FROM `GroupList` WHERE `CourseID` = %s", leaderName);
+
 			PreparedStatement stat = conn.prepareStatement(query);
 			ResultSet rs = stat.executeQuery(query);
 			DefaultTableModel model = new DefaultTableModel() {

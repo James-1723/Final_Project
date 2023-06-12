@@ -22,13 +22,13 @@ public class User {
 	public String userAccount;
 	public String userName;
 	public String userDep;
-	public String leaderName;
-
+	
 	//*User's applied group */
 	public String courseName;
 	public int courseID;
 	public int groupID;
 	public String message;
+	public String leaderName;
 
 	public User() {
 		accounts = new ArrayList<String>();
