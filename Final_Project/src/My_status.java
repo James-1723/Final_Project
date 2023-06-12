@@ -19,6 +19,7 @@ public class My_status extends JFrame {
 	private JComboBox comboBox = new JComboBox();
 
 	public My_status(User users) {
+		this.user = users;
 		setTitle("My Status");
 		createLayout();
 		createJoinTable();
@@ -50,12 +51,14 @@ public class My_status extends JFrame {
 						PreparedStatement stat = conn.prepareStatement(query);
 						ResultSet rs = stat.executeQuery(query);
 
+						// 加入後從frame消失
+						// if滿了，從user介面消失
+						// 寄信給被加入者、如果滿了沒被加入的人也要寄
+
 					} catch (SQLException e1) {
 						e1.printStackTrace();
 					}
-					// 加入後從frame消失
-					// if滿了，從user介面消失
-					// 寄信給被加入者、如果滿了沒被加入的人也要寄
+
 					JOptionPane.showMessageDialog(null, "You have successfully added the members!",
 							"Success", JOptionPane.INFORMATION_MESSAGE);
 
@@ -101,8 +104,7 @@ public class My_status extends JFrame {
 			// 因為userName是空值，所以現在show不出東西
 			String name = user.userName;
 			System.out.print("ede" + name);
-			String query = String.format("SELECT * FROM `GroupList` WHERE `Current_members' names` LIKE '%%%s%%'",
-					name);
+			String query = String.format("SELECT * FROM `GroupList` WHERE `Member` LIKE '%%%s%%'", name);
 
 			PreparedStatement stat = conn.prepareStatement(query);
 			// String.format("'%%'+'%s'+'%%'", name);
@@ -151,7 +153,9 @@ public class My_status extends JFrame {
 	public void createRecruitTable() {
 		try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
 			int courseID = user.courseID;
-			String query = String.format("SELECT * FROM `GroupList` WHERE `CourseID` = %s", courseID);
+			String query = String.format(
+					"SELECT `CourseID`, `GroupID`, `GroupName`, `department`, `Member`, `Message`  FROM `GroupList` WHERE `CourseID` = %s",
+					courseID);
 			// String leaderName = user.userName;
 			// String query = String.format("SELECT * FROM `GroupList` WHERE `CourseID` =
 			// %s", leaderName);
@@ -198,10 +202,10 @@ public class My_status extends JFrame {
 			TableColumn checkBoxColumn = columnModel.getColumn(0);// 取得欄位0 就是整欄的checkBox
 			recruit_table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
 
-			TableColumn currentColume = columnModel.getColumn(7);
-			currentColume.setPreferredWidth(200);
-			TableColumn messageColume = columnModel.getColumn(8);
-			messageColume.setPreferredWidth(300);
+			// TableColumn currentColume = columnModel.getColumn(7);
+			// currentColume.setPreferredWidth(200);
+			// TableColumn messageColume = columnModel.getColumn(8);
+			// messageColume.setPreferredWidth(300);
 
 			checkBoxColumn.setCellEditor(new DefaultCellEditor(new JCheckBox()));// 設置欄位編輯器是預設的，並初始化
 			checkBoxColumn.setCellRenderer(recruit_table.getDefaultRenderer(Boolean.class));
