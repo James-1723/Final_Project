@@ -3,8 +3,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import com.mysql.cj.x.protobuf.MysqlxCrud.Update;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
@@ -66,11 +64,11 @@ public class My_status extends JFrame {
 
 							if (selected) {
 
-								//找Course Name
-								//courseName = (String) recruit_table.getValueAt(i, 2);
-								//user.courseName = courseName;
-								
-								int cID = (int)recruit_table.getValueAt(i, 1);
+								// 找Course Name
+								// courseName = (String) recruit_table.getValueAt(i, 2);
+								// user.courseName = courseName;
+
+								int cID = (int) recruit_table.getValueAt(i, 1);
 								courseIDs = cID;
 								stuName = (String) recruit_table.getValueAt(i, 4);
 								String a = (String) recruit_table.getValueAt(i, 6);
@@ -84,13 +82,13 @@ public class My_status extends JFrame {
 								ResultSet s = user.stat.executeQuery(query);
 
 								int origin_num = 0, new_num = 0;
-								
+
 								while (s.next()) {
 
 									origin_num = Integer.parseInt(s.getString("Expected"));
-									
+
 								}
-								
+
 								new_num = origin_num - 1;
 								query = "Update GroupList SET Expected = " + new_num + " WHERE GroupID = " + groupID;
 
@@ -98,16 +96,20 @@ public class My_status extends JFrame {
 
 								// *Sending email */
 								String gmail = stuID + "@g.nccu.edu.tw";
-								//* JavaMail mail = new JavaMail(gmail, "Member-Finding System", text);
-								//* mail.SendMail();
+								// * JavaMail mail = new JavaMail(gmail, "Member-Finding System", text);
+								// * mail.SendMail();
 
 								// user.courseID = courseIDs;
 
 								// 找到stuName之後 把他從registerList 刪掉 已成功
-								// String query = String.format("DELETE FROM Total_Register_List WHERE
-								// `StudentName` = '%s'",stuName);
-								// user.stat.execute(query);
-								// System.out.println(String.format("成功從registers 刪掉%s",stuName));
+								/*
+								 * query =
+								 * String.format("DELETE FROM Total_Register_List WHERE `StudentName` = '%s'"
+								 * ,stuName);
+								 * user.stat.execute(query);
+								 * System.out.println(String.format("成功從registers 刪掉%s",stuName));
+								 * 
+								 */
 
 								// 並且加進GroupList
 								query = String.format("SELECT `Member` FROM `GroupList` WHERE `GroupID` = '%s'",
@@ -119,7 +121,8 @@ public class My_status extends JFrame {
 									StringBuilder strbuild = new StringBuilder();
 									strbuild.append(studentName);
 									strbuild.append("," + stuName);
-									query = "UPDATE GroupList SET Member = '" + strbuild.toString() + "' WHERE GroupID = '" + groupID + "'";
+									query = "UPDATE GroupList SET Member = '" + strbuild.toString()
+											+ "' WHERE GroupID = '" + groupID + "'";
 									user.stat.execute(query);
 									System.out.print("現在全部" + strbuild);
 									System.out.println(String.format("有無成功從groupList加入%s", stuName));
