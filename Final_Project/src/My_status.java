@@ -127,6 +127,12 @@ public class My_status extends JFrame {
 									System.out.print("現在全部" + strbuild);
 									System.out.println(String.format("有無成功從groupList加入%s", stuName));
 
+									//*Back to main page
+									main.setAccount(user);
+									main.setDefaultCloseOperation(EXIT_ON_CLOSE);
+									main.setVisible(true);
+									main.setSize(600, 500);
+
 								}
 
 							}
