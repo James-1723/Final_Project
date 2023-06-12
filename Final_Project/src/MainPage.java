@@ -229,9 +229,9 @@ public class MainPage extends JFrame {
 
 			public void actionPerformed(ActionEvent e) {
 
-				if (!checker) {
+				if (!checker) { //checker 判斷是不是直接按myStatus
 
-					user.leaderName = user.userName;
+					
 
 				}
 				My_status my_status = new My_status(user);
