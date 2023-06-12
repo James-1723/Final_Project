@@ -17,6 +17,7 @@ public class My_status extends JFrame {
 	private MainPage main = new MainPage();
 	private JPanel bPanel;
 	private JComboBox comboBox = new JComboBox();
+			
 
 	public My_status(User users) {
 		this.user = users;
@@ -27,7 +28,6 @@ public class My_status extends JFrame {
 
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				main.setAccount(user);
 				main.setDefaultCloseOperation(EXIT_ON_CLOSE);
 				main.setVisible(true);
 				main.setSize(600, 500);
@@ -35,97 +35,42 @@ public class My_status extends JFrame {
 			}
 		});
 
-		submit.addActionListener(new ActionListener() { //Join Function
-
+		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				JDialog.setDefaultLookAndFeelDecorated(true);
-
 				int response = JOptionPane.showConfirmDialog(null,
 						"just to make sure you won't regrate to recruit them.", "Confirm",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-				if (response == JOptionPane.NO_OPTION) {// 按否
-
+				if (response == JOptionPane.NO_OPTION) {//按否
 					System.out.println("No button is clicked");
-
-				} else if (response == JOptionPane.YES_OPTION) {// 按確認
-
-					try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
-
-
-						String courseName;
-						int courseIDs;
-						int groupID = 0;
-						String stuName = "";
-						int stuID = 0;
-
-						int columnCount = recruit_table.getRowCount();
-						for (int i = 0; i < columnCount; i++) {
+				} else if (response == JOptionPane.YES_OPTION) {//按確認
 					
-							Boolean selected = (Boolean) recruit_table.getValueAt(i, 0); // 第i行第0列 就是checkBox
-
-							if (selected) {
-
-								//找Course Name
-								courseName = (String) recruit_table.getValueAt(i, 2);
-								//user.courseName = courseName;
-								
-								//找CourseID
-								courseIDs = (int) recruit_table.getValueAt(i, 1);// 第i行第1列 即course_id
-								//user.courseID = courseIDs;
-								
-								//找GroupID
-								String query = String.format("SELECT GroupID FROM Total_Register_List");
-								user.result = user.stat.executeQuery(query);
-								query = String.format("SELECT GroupID FROM Total_Register_List WHERE CourseID=%d", courseIDs);
-								ResultSet r = user.stat.executeQuery(query);
-								while (r.next()) {
-									
-									//指定GroupID
-									stuName = r.getString("StudentName");
-									stuID = Integer.parseInt(r.getString("StuID"));
-									//user.groupID = Integer.parseInt(r.getString("GroupID"));
-
-								}
-
-							}
-							System.out.println("stuName: " + stuName + " / stuID: " + stuID);
-						}
-
+					try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
+						
 						comboBox.getSelectedIndex();
 						String query = "INSERT INTO`GroupList` ";
 						PreparedStatement stat = conn.prepareStatement(query);
 						ResultSet rs = stat.executeQuery(query);
-
-						// 加入後從frame消失
-						// if滿了，從user介面消失
-						// 寄信給被加入者、如果滿了沒被加入的人也要寄
-
-						//*Gmail */
-						query = "SELECT FROM `Total_Resister_List` WHERE CourseID";
-
-
-					} catch (SQLException e1) {
-
+						
+						//加入後從frame消失
+						//if滿了，從user介面消失
+						//寄信給被加入者、如果滿了沒被加入的人也要寄
+						
+					}catch (SQLException e1) {
 						e1.printStackTrace();
-
 					}
-
+					
 					JOptionPane.showMessageDialog(null, "You have successfully added the members!",
 							"Success", JOptionPane.INFORMATION_MESSAGE);
 
 				} else if (response == JOptionPane.CLOSED_OPTION) {
-
 					System.out.println("JOptionPane closed");
-
 				}
 			}
 		});
 	}
 
 	public void createLayout() {
-
 		back = new JButton("back");
 		submit = new JButton("submit");
 
@@ -138,6 +83,8 @@ public class My_status extends JFrame {
 		scrollPane_2 = new JScrollPane(recruit_table);
 		scrollPane_2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane_2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+
 
 		BoxLayout boxLayout = new BoxLayout(getContentPane(), BoxLayout.Y_AXIS);
 		getContentPane().setLayout(boxLayout);
@@ -152,101 +99,75 @@ public class My_status extends JFrame {
 		getContentPane().add(recruit_status);
 		getContentPane().add(scrollPane_2);
 		getContentPane().add(bPanel);
-
 	}
 
 	public void createJoinTable() {
+	    try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
+	     
+	    	//因為userName是空值，所以現在show不出東西
+	        String name = user.userName;
+	        System.out.print("ede"+name);
+	        String query = String.format("SELECT * FROM `GroupList` WHERE `Member` LIKE '%%%s%%'", name);
+	        
+	        PreparedStatement stat = conn.prepareStatement(query);
+	        //String.format("'%%'+'%s'+'%%'", name);
+	        //stat.setString(1, "%" + '%james,33%' + "%");
+	        ResultSet rs = stat.executeQuery();
+	        
+	        DefaultTableModel model = new DefaultTableModel() {
+	            // 指定每一欄的類型
+	            public Class<?> getColumnClass(int columnIndex) {
+	                return super.getColumnClass(columnIndex);
+	            }
+	        };
+	        ResultSetMetaData rsmd = rs.getMetaData();
+	        int cols = rsmd.getColumnCount();
 
-		try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
+	        // 加入欄位名稱
+	        for (int i = 1; i <= cols; i++) {
+	            model.addColumn(rsmd.getColumnName(i));
+	        }
 
-			// 因為userName是空值，所以現在show不出東西
-			String name = user.userName;
-			System.out.print("ede" + name);
-			String query = String.format("SELECT * FROM `GroupList` WHERE `Member` LIKE '%%%s%%'", name);
+	        // 加入資料 要先創建每一行
+	        while (rs.next()) {
+	            Object[] rows = new Object[cols];
+	            for (int i = 1; i <= cols; i++) {
+	                rows[i - 1] = rs.getObject(i);
+	            }
+	            model.addRow(rows);
+	            
+	         // 檢查資料
+	            for (int i = 0; i < model.getRowCount(); i++) {
+	                for (int j = 0; j < model.getColumnCount(); j++) {
+	                    Object value = model.getValueAt(i, j);
+	                    System.out.println(value);
+	                }
+	            }
+	        }
+	        join_table.setModel(model);
 
-			PreparedStatement stat = conn.prepareStatement(query);
-			// String.format("'%%'+'%s'+'%%'", name);
-			// stat.setString(1, "%" + '%james,33%' + "%");
-			ResultSet rs = stat.executeQuery();
-
-			DefaultTableModel model = new DefaultTableModel() {
-				// 指定每一欄的類型
-				public Class<?> getColumnClass(int columnIndex) {
-
-					return super.getColumnClass(columnIndex);
-
-				}
-			};
-			ResultSetMetaData rsmd = rs.getMetaData();
-
-			int cols = rsmd.getColumnCount();
-
-			// 加入欄位名稱
-			for (int i = 1; i <= cols; i++) {
-				model.addColumn(rsmd.getColumnName(i));
-			}
-
-			// 加入資料 要先創建每一行
-			while (rs.next()) {
-
-				Object[] rows = new Object[cols];
-
-				for (int i = 1; i <= cols; i++) {
-
-					rows[i - 1] = rs.getObject(i);
-
-				}
-
-				model.addRow(rows);
-
-				// 檢查資料
-				for (int i = 0; i < model.getRowCount(); i++) {
-
-					for (int j = 0; j < model.getColumnCount(); j++) {
-
-						Object value = model.getValueAt(i, j);
-						System.out.println(value);
-
-					}
-				}
-			}
-			join_table.setModel(model);
-
-			stat.close();
-			conn.close();
-
-		} catch (SQLException e1) {
-
-			e1.printStackTrace();
-
-		}
+	        stat.close();
+	        conn.close();
+	    } catch (SQLException e1) {
+	        e1.printStackTrace();
+	    }
 	}
 
-	public void createRecruitTable() {
-
+	public void createRecruitTable(){
 		try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
-
 			int courseID = user.courseID;
-			String query = String.format(
-					"SELECT `CourseID`, `GroupID`, `GroupName`, `department`, `Member`, `Message`  FROM `GroupList` WHERE `CourseID` = %s",
-					courseID);
-			// String leaderName = user.userName;
-			// String query = String.format("SELECT * FROM `GroupList` WHERE `CourseID` =
-			// %s", leaderName);
+			String query = String.format("SELECT `CourseID`, `GroupID`, `GroupName`, `department`, `Member`, `Message`  FROM `GroupList` WHERE `CourseID` = %s", courseID);
+//			String leaderName = user.userName;
+//			String query = String.format("SELECT * FROM `GroupList` WHERE `CourseID` = %s", leaderName);
 			PreparedStatement stat = conn.prepareStatement(query);
 			ResultSet rs = stat.executeQuery(query);
 			DefaultTableModel model = new DefaultTableModel() {
 				// 指定每一欄的類型
 				public Class<?> getColumnClass(int columnIndex) {
-
 					if (columnIndex == 0) {
-
 						return Boolean.class; // 第一欄設為布林類型
-
 					} else {
-
 						return super.getColumnClass(columnIndex);
-
 					}
 				}
 
@@ -257,28 +178,21 @@ public class My_status extends JFrame {
 
 				}
 			};
-
 			model.addColumn("Select"); // 新增布林欄位
 			ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
 			int cols = rsmd.getColumnCount();
 
 			// 加入欄位名稱
 			for (int i = 1; i <= cols; i++) {
-
 				model.addColumn(rsmd.getColumnName(i));
-
 			}
 
 			// 加入資料 要先創建每一行
 			while (rs.next()) {
-
 				Object[] rows = new Object[cols + 1]; // 創建原database資料的欄位數加一
 				rows[0] = false; // 預設未選中
-
 				for (int i = 1; i <= cols; i++) {
-
 					rows[i] = rs.getObject(i);// 將每一行添加到row
-
 				}
 				model.addRow(rows);
 			}
@@ -287,27 +201,26 @@ public class My_status extends JFrame {
 			TableColumnModel columnModel = recruit_table.getColumnModel();// 取得負責管理表格的欄位設置
 			TableColumn checkBoxColumn = columnModel.getColumn(0);// 取得欄位0 就是整欄的checkBox
 			recruit_table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
-
-			// TableColumn currentColume = columnModel.getColumn(7);
-			// currentColume.setPreferredWidth(200);
-			// TableColumn messageColume = columnModel.getColumn(8);
-			// messageColume.setPreferredWidth(300);
-
+			
+//			TableColumn currentColume = columnModel.getColumn(7);
+//			currentColume.setPreferredWidth(200);
+//			TableColumn messageColume = columnModel.getColumn(8);
+//			messageColume.setPreferredWidth(300);
+			
 			checkBoxColumn.setCellEditor(new DefaultCellEditor(new JCheckBox()));// 設置欄位編輯器是預設的，並初始化
 			checkBoxColumn.setCellRenderer(recruit_table.getDefaultRenderer(Boolean.class));
 
 			stat.close();
 			conn.close();
+			
 
+			
 			// Add combo box to each row
-			// for (int i = 0; i < recruit_table.getRowCount(); i++) {
-			// recruit_table.getColumnModel().getColumn(i).setCellEditor(new
-			// DefaultCellEditor(comboBox));
-			// }
+//			for (int i = 0; i < recruit_table.getRowCount(); i++) {
+//				recruit_table.getColumnModel().getColumn(i).setCellEditor(new DefaultCellEditor(comboBox));
+//			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
 	}
 }
-
-

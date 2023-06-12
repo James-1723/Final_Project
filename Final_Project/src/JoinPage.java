@@ -12,7 +12,7 @@ public class JoinPage extends JFrame {
 	private JButton submit, back;
 	private JCheckBox[] checkBoxes;
 	private JScrollPane scrollPane;
-	private ArrayList<Integer> courseIDs, mails;
+	private ArrayList<Integer> courseIDs, mails, selectedGroupIDs;
 	private ResultSet result;
 	private JTable joinTable;
 	private User user = new User();
@@ -35,11 +35,66 @@ public class JoinPage extends JFrame {
 
 				try {
 					
-					//*Add student into total register list */
-					String query = "INSERT INTO `Total_Register_List` (CourseId, GroupID, StudentName, Department) VALUES" + String.format("(%d, %d, '%s', '%s')", user.courseID, user.groupID, user.userName, user.userDep);
-					//*Adding User ID */
-					//String query = "INSERT INTO `Total_Register_List` (CourseId, GroupID, StudentName, Department, StuID) VALUES" + String.format("(%d, %d, '%s', '%s', %d)", user.courseID, user.groupID, user.userName, user.userDep, user.userAccount);
+					int columnCount = joinTable.getRowCount();
+					selectedGroupIDs = new ArrayList<Integer>();
 
+					for (int i = 0; i < columnCount; i++) {
+						
+						Boolean selected = (Boolean) joinTable.getValueAt(i, 0); // 第i行第0列 就是checkBox
+						if (selected) {
+
+							//*Add */
+							int selectedGroupID =(int) joinTable.getValueAt(i, 2);//第i行第2列 就是groupID
+							selectedGroupIDs.add(selectedGroupID);//加入一個list
+							
+							String leaderName =(String) joinTable.getValueAt(i, 3);//第i行第3列 就是leaderName
+							selectedGroupIDs.add(selectedGroupID);//加入一個list
+
+							//*Group ID */
+
+							try {
+
+								String query = String.format("SELECT GroupID FROM GroupList");
+								user.result = user.stat.executeQuery(query);
+								query = String.format("SELECT GroupID FROM GroupList WHERE CourseID=%d", user.courseID);
+								ResultSet r = user.stat.executeQuery(query);
+
+								while (r.next()) {
+									
+									user.groupID = Integer.parseInt(r.getString("GroupID"));
+
+								}
+
+								System.out.println("user's GroupID = " + user.groupID);
+
+								//query = "INSERT INTO `Total_Register_List` (CourseId, GroupID, StudentName) VALUES" + String.format("(%d, %d, '%s')", user.courseID, user.groupID, user.userName);
+								//user.stat.execute(query);
+								
+							} catch (Exception ae) {
+
+								ae.printStackTrace();
+
+							}
+
+
+						}
+					}
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+
+					
+					String query = "INSERT INTO `Total_Register_List` (CourseId, GroupID, StudentName, LeaderName) VALUES" + String.format("(%d, %d, '%s','%s')", user.courseID, user.groupID, user.userName);
 					user.stat.execute(query);
 
 					//*user */

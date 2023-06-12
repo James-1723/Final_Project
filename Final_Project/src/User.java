@@ -22,6 +22,7 @@ public class User {
 	public String userAccount;
 	public String userName;
 	public String userDep;
+	public String leaderName;
 
 	//*User's applied group */
 	public String courseName;
