@@ -57,12 +57,16 @@ public class RecruitPage extends JFrame {
 		});
 
 		back.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e){
+
+				System.out.println("Recruit_back info: " + user.userAccount + " / " + user.userName);
 				main.setAccount(user);
 				main.setDefaultCloseOperation(EXIT_ON_CLOSE);
 				main.setVisible(true);
 				main.setSize(600, 500);
 				dispose();
+
 			}
 		});
 	}

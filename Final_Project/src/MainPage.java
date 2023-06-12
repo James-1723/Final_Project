@@ -109,7 +109,7 @@ public class MainPage extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				checker = true;
-				setAccount(user);
+				//setAccount(user);
 				int columnCount = table_1.getRowCount();
 				selectedIDs = new ArrayList<Integer>();
 
@@ -231,7 +231,7 @@ public class MainPage extends JFrame {
 
 				if (!checker) { //checker 判斷是不是直接按myStatus
 
-					
+
 
 				}
 				My_status my_status = new My_status(user);
