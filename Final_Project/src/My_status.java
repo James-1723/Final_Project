@@ -53,9 +53,9 @@ public class My_status extends JFrame {
 					try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
 
 
-						String courseName;
-						int courseIDs;
-						int groupID = 0;
+						String courseName = "";
+						int courseIDs = 0;
+						//int groupID = 0;
 						String stuName = "";
 						int stuID = 0;
 
@@ -67,29 +67,43 @@ public class My_status extends JFrame {
 							if (selected) {
 
 								//找Course Name
-								courseName = (String) recruit_table.getValueAt(i, 2);
+								//courseName = (String) recruit_table.getValueAt(i, 2);
 								//user.courseName = courseName;
 								
-								//找CourseID
-								courseIDs = (int) recruit_table.getValueAt(i, 1);// 第i行第1列 即course_id
+								//找GroupID
+								stuName = (String)recruit_table.getValueAt(i, 4);
+								String a = (String)recruit_table.getValueAt(i, 6);
+								stuID = Integer.parseInt(a) ;
+								int groupID = (int) recruit_table.getValueAt(i, 2);// 第i行第1列 即groupID
+								System.out.println("stuName: " + stuName + " / stuID: " + stuID);
+
 								//user.courseID = courseIDs;
 								
+								//找到recruiterName之後 把他從registerList 刪掉
+								String query = String.format("DELETE FROM Total_Register_List WHERE `StudentName` = '%s'",stuName);
+								ResultSet r = user.stat.executeQuery(query);
+
+								//並且加進GroupList
+								query = String.format("DELETE FROM Total_Register_List WHERE `StudentName` = '%s'",stuName);
+
+
 								//找GroupID
-								String query = String.format("SELECT GroupID FROM Total_Register_List");
+								query = String.format("SELECT GroupID FROM Total_Register_List");
+								r = user.stat.executeQuery(query);
+
 								user.result = user.stat.executeQuery(query);
 								query = String.format("SELECT GroupID FROM Total_Register_List WHERE CourseID=%d", courseIDs);
-								ResultSet r = user.stat.executeQuery(query);
-								while (r.next()) {
+								r = user.stat.executeQuery(query);
+								/*while (r.next()) {
 									
 									//指定GroupID
 									stuName = r.getString("StudentName");
 									stuID = Integer.parseInt(r.getString("StuID"));
 									//user.groupID = Integer.parseInt(r.getString("GroupID"));
 
-								}
+								}*/
 
 							}
-							System.out.println("stuName: " + stuName + " / stuID: " + stuID);
 						}
 
 						comboBox.getSelectedIndex();
@@ -206,9 +220,9 @@ public class My_status extends JFrame {
 
 	public void createRecruitTable(){
 		try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
-			int courseID = user.courseID;
-			String query = String.format("SELECT `CourseID`, `GroupID`, `GroupName`, `department`, `Member`, `Message`  FROM `GroupList` WHERE `CourseID` = %s", courseID);
-//			String leaderName = user.userName;
+			String leaderName = user.leaderName;
+			System.out.println("create Recruit table" + leaderName);
+			String query = String.format("SELECT * FROM Total_Register_List WHERE `LeaderName` = '%s'", leaderName); 
 //			String query = String.format("SELECT * FROM `GroupList` WHERE `CourseID` = %s", leaderName);
 			PreparedStatement stat = conn.prepareStatement(query);
 			ResultSet rs = stat.executeQuery(query);

@@ -38,7 +38,6 @@ public class RecruitPage extends JFrame {
 					// ResultSet result = stat.getResultSet();
 					String selection = "SELECT * FROM GroupList";
 					stat.execute(selection);
-					//selection = String.format("INSERT INTO `GroupList` (CourseID, GroupName, LeaderName, LeaderID, department, Current_member's names, Message) VALUES(%d, '%s', '%s', '%s', '%s', '%s')",user.courseID, q0 , user.userName, user.userAccount, user.userDep, q4, q6);
 					selection = "INSERT INTO `GroupList` (CourseID, GroupName, LeaderName, LeaderID, department, Member, Message) VALUES" + String.format("(%d, '%s', '%s', '%s', '%s', '%s', '%s')", user.courseID, q0 , user.userName, user.userAccount, user.userDep, q4, q6);
 					stat.execute(selection);
 

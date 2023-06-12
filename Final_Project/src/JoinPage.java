@@ -47,8 +47,9 @@ public class JoinPage extends JFrame {
 							int selectedGroupID =(int) joinTable.getValueAt(i, 2);//第i行第2列 就是groupID
 							selectedGroupIDs.add(selectedGroupID);//加入一個list
 							
-							String leaderName =(String) joinTable.getValueAt(i, 3);//第i行第3列 就是leaderName
-							selectedGroupIDs.add(selectedGroupID);//加入一個list
+							String leaderName =(String) joinTable.getValueAt(i, 4);//第i行第3列 就是leaderName
+							user.leaderName = leaderName;
+							//selectedGroupIDs.add(selectedGroupID);//加入一個list
 
 							//*Group ID */
 
@@ -67,8 +68,8 @@ public class JoinPage extends JFrame {
 
 								System.out.println("user's GroupID = " + user.groupID);
 
-								//query = "INSERT INTO `Total_Register_List` (CourseId, GroupID, StudentName) VALUES" + String.format("(%d, %d, '%s')", user.courseID, user.groupID, user.userName);
-								//user.stat.execute(query);
+								query = "INSERT INTO `Total_Register_List` (CourseID, GroupID, LeaderName, StudentName, Department, StuID) VALUES" + String.format("(%d, %d, '%s', '%s', '%s', '%s')", user.courseID, user.groupID, leaderName, user.userName, user.userDep, user.userAccount);
+								user.stat.execute(query);
 								
 							} catch (Exception ae) {
 
@@ -80,22 +81,8 @@ public class JoinPage extends JFrame {
 						}
 					}
 					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-
-					
-					String query = "INSERT INTO `Total_Register_List` (CourseId, GroupID, StudentName, LeaderName) VALUES" + String.format("(%d, %d, '%s','%s')", user.courseID, user.groupID, user.userName);
-					user.stat.execute(query);
+					//String query = "INSERT INTO `Total_Register_List` (CourseId, GroupID, StudentName, LeaderName) VALUES" + String.format("(%d, %d, '%s','%s')", user.courseID, user.groupID, user.userName);
+					//user.stat.execute(query);
 
 					//*user */
 					main.setAccount(user);

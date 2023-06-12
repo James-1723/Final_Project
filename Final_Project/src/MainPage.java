@@ -16,6 +16,7 @@ public class MainPage extends JFrame {
 	private JTable table_1;
 	private User user = new User();
 	private String query;
+	private boolean checker = false;
 
 	public MainPage() {
 		createLabel();
@@ -107,6 +108,7 @@ public class MainPage extends JFrame {
 
 			public void actionPerformed(ActionEvent e) {
 
+				checker = true;
 				setAccount(user);
 				int columnCount = table_1.getRowCount();
 				selectedIDs = new ArrayList<Integer>();
@@ -182,6 +184,7 @@ public class MainPage extends JFrame {
 
 			public void actionPerformed(ActionEvent e) {
 
+				checker = true;
 				int columnCount = table_1.getRowCount();
 				selectedIDs = new ArrayList<>();
 
@@ -223,11 +226,19 @@ public class MainPage extends JFrame {
 			}
 		});
 		myStatus.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
+
+				if (!checker) {
+
+					user.leaderName = user.userName;
+
+				}
 				My_status my_status = new My_status(user);
 				my_status.setVisible(true);
 				my_status.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				my_status.setSize(900, 500);
+
 			}
 		});
 		showAll.addActionListener(new ActionListener() {
@@ -254,25 +265,7 @@ public class MainPage extends JFrame {
 
 		searchField = new JTextField(25);
 		searchField.setText("Search by course's name, ID, or teacher."); // 設定提示文字
-		//
-		// searchField.addFocusListener(new FocusListener() {
-		//
-		// public void focusGained(FocusEvent e) {
-		// // 當searchField被點擊時，清除提示文字
-		// if (searchField.getText().equals("Search by course's name, ID, or teacher."))
-		// {
-		// searchField.setText("");
-		// searchField.setForeground(Color.BLACK); // 將文字顏色設定回黑色
-		// }
-		// }
-		// public void focusLost(FocusEvent e) {
-		// // 當焦點失去時，如果文字為空，顯示提示文字
-		// if (searchField.getText().isEmpty()) {
-		// searchField.setForeground(Color.GRAY);
-		// searchField.setText("Search by course's name, ID, or teacher.");
-		// }
-		// }
-		// });
+		
 	}
 
 	public void showAll() {
