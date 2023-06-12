@@ -45,6 +45,7 @@ public class RecruitPage extends JFrame {
 					main.setDefaultCloseOperation(EXIT_ON_CLOSE);
 					main.setVisible(true);
 					main.setSize(600, 500);
+					main.setAccount(user);
 
 				} catch (Exception m) {
 

@@ -30,6 +30,7 @@ public class My_status extends JFrame {
 				main.setDefaultCloseOperation(EXIT_ON_CLOSE);
 				main.setVisible(true);
 				main.setSize(600, 500);
+				main.setAccount(user);
 				My_status.this.dispose();
 			}
 		});
@@ -96,20 +97,16 @@ public class My_status extends JFrame {
 
 								// *Sending email */
 								String gmail = stuID + "@g.nccu.edu.tw";
-								// * JavaMail mail = new JavaMail(gmail, "Member-Finding System", text);
-								// * mail.SendMail();
+								JavaMail mail = new JavaMail(gmail, "Member-Finding System", text);
+								mail.SendMail();
 
 								// user.courseID = courseIDs;
 
 								// 找到stuName之後 把他從registerList 刪掉 已成功
-								/*
-								 * query =
-								 * String.format("DELETE FROM Total_Register_List WHERE `StudentName` = '%s'"
-								 * ,stuName);
-								 * user.stat.execute(query);
-								 * System.out.println(String.format("成功從registers 刪掉%s",stuName));
-								 * 
-								 */
+						
+								 query = String.format("DELETE FROM Total_Register_List WHERE `StuID` = '%s'" ,stuID);
+								 user.stat.execute(query);
+								 System.out.println(String.format("成功從registers 刪掉%s",stuName));
 
 								// 並且加進GroupList
 								query = String.format("SELECT `Member` FROM `GroupList` WHERE `GroupID` = '%s'",
@@ -132,8 +129,10 @@ public class My_status extends JFrame {
 									main.setDefaultCloseOperation(EXIT_ON_CLOSE);
 									main.setVisible(true);
 									main.setSize(600, 500);
+									checkGroup(groupID);
 
 								}
+								
 
 							}
 						}
@@ -189,7 +188,6 @@ public class My_status extends JFrame {
 		try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
 
 			String stuID = user.userAccount;
-			System.out.print("ede" + stuID);
 			String query = String.format("SELECT * FROM `Total_Register_List` WHERE `StuID`= '%s'", stuID);
 
 			PreparedStatement stat = conn.prepareStatement(query);
@@ -305,5 +303,21 @@ public class My_status extends JFrame {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
+	}
+
+	public void checkGroup(int groupID) {
+
+		
+		try {
+			
+			String query = String.format("DELETE FROM GroupList WHERE Expected = 0");
+			user.stat.execute(query);
+			
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			
+		}
+
 	}
 }
