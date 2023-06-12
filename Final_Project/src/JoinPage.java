@@ -55,20 +55,8 @@ public class JoinPage extends JFrame {
 
 							try {
 
-								String query = String.format("SELECT GroupID FROM GroupList");
-								user.result = user.stat.executeQuery(query);
-								query = String.format("SELECT GroupID FROM GroupList WHERE CourseID=%d", user.courseID);
-								ResultSet r = user.stat.executeQuery(query);
-
-								while (r.next()) {
-									
-									user.groupID = Integer.parseInt(r.getString("GroupID"));
-
-								}
-
-								System.out.println("user's GroupID = " + user.groupID);
-
-								query = "INSERT INTO `Total_Register_List` (CourseID, GroupID, LeaderName, StudentName, Department, StuID) VALUES" + String.format("(%d, %d, '%s', '%s', '%s', '%s')", user.courseID, user.groupID, leaderName, user.userName, user.userDep, user.userAccount);
+								user.groupID = (int) joinTable.getValueAt(i, 1);
+								String query = "INSERT INTO `Total_Register_List` (CourseID, GroupID, LeaderName, StudentName, Department, StuID) VALUES" + String.format("(%d, %d, '%s', '%s', '%s', '%s')", user.courseID, user.groupID, leaderName, user.userName, user.userDep, user.userAccount);
 								user.stat.execute(query);
 								
 							} catch (Exception ae) {
