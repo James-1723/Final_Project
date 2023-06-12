@@ -34,47 +34,66 @@ public class JoinPage extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				try {
-					
+
 					int columnCount = joinTable.getRowCount();
 					selectedGroupIDs = new ArrayList<Integer>();
 
 					for (int i = 0; i < columnCount; i++) {
-						
+
 						Boolean selected = (Boolean) joinTable.getValueAt(i, 0); // 第i行第0列 就是checkBox
 						if (selected) {
 
-							//*Add */
-							int selectedGroupID =(int) joinTable.getValueAt(i, 2);//第i行第2列 就是groupID
-							selectedGroupIDs.add(selectedGroupID);//加入一個list
-							
-							String leaderName =(String) joinTable.getValueAt(i, 4);//第i行第3列 就是leaderName
-							user.leaderName = leaderName;
-							//selectedGroupIDs.add(selectedGroupID);//加入一個list
+							// *Add */
+							int selectedGroupID = (int) joinTable.getValueAt(i, 2);// 第i行第2列 就是groupID
+							selectedGroupIDs.add(selectedGroupID);// 加入一個list
 
-							//*Group ID */
+							String leaderName = (String) joinTable.getValueAt(i, 4);// 第i行第3列 就是leaderName
+							user.leaderName = leaderName;
+							// selectedGroupIDs.add(selectedGroupID);//加入一個list
+
+							// *Group ID */
 
 							try {
 
-								user.groupID = (int) joinTable.getValueAt(i, 1);
-								String query = "INSERT INTO `Total_Register_List` (CourseID, GroupID, LeaderName, StudentName, Department, StuID) VALUES" + String.format("(%d, %d, '%s', '%s', '%s', '%s')", user.courseID, user.groupID, leaderName, user.userName, user.userDep, user.userAccount);
+								String query = String.format("SELECT GroupID FROM GroupList");
+								user.result = user.stat.executeQuery(query);
+								query = String.format("SELECT GroupID FROM GroupList WHERE CourseID=%d", user.courseID);
+								ResultSet r = user.stat.executeQuery(query);
+
+								while (r.next()) {
+
+									user.groupID = Integer.parseInt(r.getString("GroupID"));
+
+								}
+
+								System.out.println("user's GroupID = " + user.groupID);
+
+								query = "INSERT INTO `Total_Register_List` (CourseID, GroupID, LeaderName, StudentName, Department, StuID) VALUES"
+										+ String.format("(%d, %d, '%s', '%s', '%s', '%s')", user.courseID, user.groupID,
+												leaderName, user.userName, user.userDep, user.userAccount);
 								user.stat.execute(query);
-								
+
+								JOptionPane.showMessageDialog(null,
+										"You will be informed with a letter after the group leader adds you to his/her group!",
+										"Success Applied", JOptionPane.INFORMATION_MESSAGE);
+
 							} catch (Exception ae) {
 
 								ae.printStackTrace();
 
 							}
 
-
 						}
 					}
-					
-					//String query = "INSERT INTO `Total_Register_List` (CourseId, GroupID, StudentName, LeaderName) VALUES" + String.format("(%d, %d, '%s','%s')", user.courseID, user.groupID, user.userName);
-					//user.stat.execute(query);
 
-					//*user */
+					// String query = "INSERT INTO `Total_Register_List` (CourseId, GroupID,
+					// StudentName, LeaderName) VALUES" + String.format("(%d, %d, '%s','%s')",
+					// user.courseID, user.groupID, user.userName);
+					// user.stat.execute(query);
+
+					// *user */
 					main.setAccount(user);
-					//*user */
+					// *user */
 					main.setDefaultCloseOperation(EXIT_ON_CLOSE);
 					main.setVisible(true);
 					main.setSize(600, 500);
@@ -86,65 +105,66 @@ public class JoinPage extends JFrame {
 
 				}
 
-
-
-				/*for (int i = 0; i < checkBoxes.length; i++) {
-
-					checkBoxes[i] = new JCheckBox();
-					final int index = i;
-
-					checkBoxes[index].addItemListener(new ItemListener(){//選出被選到的course
-
-						public void itemStateChanged(ItemEvent e) {// itemStateChanged checkBoxes[i]狀態改變
-
-							System.out.println(e.getItem() + " " + e.getStateChange() );
-							System.out.println("this");
-
-							if (e.getStateChange() == ItemEvent.SELECTED){
-
-								System.out.print("mails");
-
-								try {
-
-									if (result.absolute(index + 4)) {
-
-										int mail = result.getInt("Leader_ID");
-										mails.add(mail);
-										System.out.print(mails);
-										StringBuilder sb = new StringBuilder();
-
-										for (Integer oneMail : mails) {
-											if (oneMail != null) {
-												sb.append(oneMail);
-												sb.append(",");
-											}
-										}
-									}	
-
-									
-								} catch (SQLException e1) {
-
-									e1.printStackTrace();
-
-								}
-							}
-						}
-					});
-				}*/
+				/*
+				 * for (int i = 0; i < checkBoxes.length; i++) {
+				 * 
+				 * checkBoxes[i] = new JCheckBox();
+				 * final int index = i;
+				 * 
+				 * checkBoxes[index].addItemListener(new ItemListener(){//選出被選到的course
+				 * 
+				 * public void itemStateChanged(ItemEvent e) {// itemStateChanged
+				 * checkBoxes[i]狀態改變
+				 * 
+				 * System.out.println(e.getItem() + " " + e.getStateChange() );
+				 * System.out.println("this");
+				 * 
+				 * if (e.getStateChange() == ItemEvent.SELECTED){
+				 * 
+				 * System.out.print("mails");
+				 * 
+				 * try {
+				 * 
+				 * if (result.absolute(index + 4)) {
+				 * 
+				 * int mail = result.getInt("Leader_ID");
+				 * mails.add(mail);
+				 * System.out.print(mails);
+				 * StringBuilder sb = new StringBuilder();
+				 * 
+				 * for (Integer oneMail : mails) {
+				 * if (oneMail != null) {
+				 * sb.append(oneMail);
+				 * sb.append(",");
+				 * }
+				 * }
+				 * }
+				 * 
+				 * 
+				 * } catch (SQLException e1) {
+				 * 
+				 * e1.printStackTrace();
+				 * 
+				 * }
+				 * }
+				 * }
+				 * });
+				 * }
+				 */
 			}
 		});
 		back.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
 
-				//*user */
+				// *user */
 				main.setAccount(user);
-				//*user */
+				// *user */
 				main.setDefaultCloseOperation(EXIT_ON_CLOSE);
 				main.setVisible(true);
 				main.setSize(600, 500);
 				JoinPage.this.dispose();
-				
+
 			}
 		});
 
@@ -178,7 +198,7 @@ public class JoinPage extends JFrame {
 			StringBuilder sb = new StringBuilder();
 
 			for (Integer courseID : courseIDs) {
-				
+
 				if (courseID != null) {
 
 					sb.append(courseID);
