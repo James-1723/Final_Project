@@ -249,7 +249,7 @@ public class My_status extends JFrame {
 
 		try (Connection conn = DriverManager.getConnection(user.url, user.usernameLogin, user.password)) {
 
-			String query = String.format("SELECT * FROM Total_Register_List WHERE `LeaderName` = '%s'", user.userName);
+			String query = String.format("SELECT CourseID, GroupID, GroupName, StudentName, Department, StuID  FROM Total_Register_List WHERE `LeaderName` = '%s'", user.userName);
 
 			PreparedStatement stat = conn.prepareStatement(query);
 			ResultSet rs = stat.executeQuery(query);
