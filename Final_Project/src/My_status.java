@@ -3,6 +3,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import com.mysql.cj.x.protobuf.MysqlxCrud.Update;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
@@ -64,11 +66,11 @@ public class My_status extends JFrame {
 
 							if (selected) {
 
-								// 找Course Name
-								// courseName = (String) recruit_table.getValueAt(i, 2);
-								// user.courseName = courseName;
-
-								int cID = (int) recruit_table.getValueAt(i, 1);
+								//找Course Name
+								//courseName = (String) recruit_table.getValueAt(i, 2);
+								//user.courseName = courseName;
+								
+								int cID = (int)recruit_table.getValueAt(i, 1);
 								courseIDs = cID;
 								stuName = (String) recruit_table.getValueAt(i, 4);
 								String a = (String) recruit_table.getValueAt(i, 6);
@@ -78,7 +80,21 @@ public class My_status extends JFrame {
 								leaderName = (String) recruit_table.getValueAt(i, 3);
 								String text = "學號 " + stuID + " 已被課程 " + courseIDs + " 課程組長 " + leaderName + "加入";
 
-								System.out.println("stuName: " + stuName + " / stuID: " + stuID);
+								String query = "SELECT Expected FROM GroupList WHERE GroupID = " + groupID;
+								ResultSet s = user.stat.executeQuery(query);
+
+								int origin_num = 0, new_num = 0;
+								
+								while (s.next()) {
+
+									origin_num = Integer.parseInt(s.getString("Expected"));
+									
+								}
+								
+								new_num = origin_num - 1;
+								query = "Update GroupList SET Expected = " + new_num + " WHERE GroupID = " + groupID;
+
+								user.stat.execute(query);
 
 								// *Sending email */
 								String gmail = stuID + "@g.nccu.edu.tw";
