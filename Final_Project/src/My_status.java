@@ -98,8 +98,8 @@ public class My_status extends JFrame {
 
 								// *Sending email */
 								String gmail = stuID + "@g.nccu.edu.tw";
-								// JavaMail mail = new JavaMail(gmail, "Member-Finding System", text);
-								// mail.SendMail();
+								//* JavaMail mail = new JavaMail(gmail, "Member-Finding System", text);
+								//* mail.SendMail();
 
 								// user.courseID = courseIDs;
 
@@ -110,7 +110,7 @@ public class My_status extends JFrame {
 								// System.out.println(String.format("成功從registers 刪掉%s",stuName));
 
 								// 並且加進GroupList
-								String query = String.format("SELECT `Member` FROM `GroupList` WHERE `GroupID` = '%s'",
+								query = String.format("SELECT `Member` FROM `GroupList` WHERE `GroupID` = '%s'",
 										groupID);
 								ResultSet result = user.stat.executeQuery(query);
 
