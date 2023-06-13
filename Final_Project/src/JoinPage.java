@@ -58,7 +58,7 @@ public class JoinPage extends JFrame {
 
 								String query = String.format("SELECT GroupID FROM GroupList");
 								user.result = user.stat.executeQuery(query);
-								query = String.format("SELECT GroupID FROM GroupList WHERE CourseID=%d", user.courseID);
+								query = String.format("SELECT GroupID, GroupName FROM GroupList WHERE CourseID=%d", user.courseID);
 								ResultSet r = user.stat.executeQuery(query);
 								String groupName = "";
 
@@ -66,14 +66,14 @@ public class JoinPage extends JFrame {
 
 									user.groupID = Integer.parseInt(r.getString("GroupID"));
 									groupName = r.getString("GroupName");
+									System.out.println("GroupName = " + groupName);
 
 								}
 
 								System.out.println("user's GroupID = " + user.groupID);
 
-								query = "INSERT INTO `Total_Register_List` (CourseID, GroupID, GroupName, StudentName, Department, StuID) VALUES"
-										+ String.format("(%d, %d, '%s', '%s', '%s', '%s')", user.courseID, user.groupID,
-												groupName, user.userName, user.userDep, user.userAccount);
+								query = "INSERT INTO `Total_Register_List` (CourseID, GroupID, LeaderName, StudentName, Department, StuID, GroupName) VALUES"
+										+ String.format("(%d, %d, '%s', '%s', '%s', '%s', '%s')", user.courseID, user.groupID,user.leaderName, user.userName, user.userDep, user.userAccount, groupName);
 								user.stat.execute(query);
 
 								JOptionPane.showMessageDialog(null,
